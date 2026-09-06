@@ -1,0 +1,70 @@
+/* Le châssis est un objet : il garde sa teinte dans les deux thèmes. Seul
+   l'écran suit le thème, puisqu'il montre l'application. Le liseré interne
+   remplace l'ombre portée pour détacher l'appareil d'un fond sombre, où une
+   ombre ne se voit plus. */
+.phone {
+  position: relative;
+  aspect-ratio: 9 / 18;
+  background: linear-gradient(165deg, var(--brand-plum), var(--brand-night));
+  border-radius: 2.75rem;
+  padding: 0.5rem;
+  box-shadow:
+    0 1.5rem 3rem -1rem rgb(var(--shadow-rgb) / 0.4),
+    0 0.5rem 1rem -0.5rem rgb(var(--shadow-rgb) / 0.3),
+    inset 0 0 0 1px rgb(255 255 255 / 0.09);
+}
+
+.phone::before,
+.phone::after {
+  content: "";
+  position: absolute;
+  background: linear-gradient(180deg, var(--brand-plum), var(--brand-night));
+}
+
+.phone::before {
+  left: -3px;
+  top: 17%;
+  width: 3px;
+  height: 7%;
+  border-radius: 2px 0 0 2px;
+}
+
+.phone::after {
+  right: -3px;
+  top: 24%;
+  width: 3px;
+  height: 11%;
+  border-radius: 0 2px 2px 0;
+}
+
+.notch {
+  position: absolute;
+  top: 0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5rem;
+  height: 1.05rem;
+  background: var(--brand-night);
+  border-radius: 999px;
+  z-index: 2;
+}
+
+.screen {
+  position: relative;
+  height: 100%;
+  background: var(--paper);
+  border-radius: 2.25rem;
+  overflow: hidden;
+}
+
+.homeIndicator {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--fill-soft);
+  z-index: 2;
+}

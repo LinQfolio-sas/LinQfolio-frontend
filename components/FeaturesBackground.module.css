@@ -1,0 +1,66 @@
+/* Same visual grammar as the Hero / FAQ / About page backgrounds: soft
+   off-canvas glow blobs + a fine grain texture + one giant faint on-brand
+   glyph. Here the glyph is the active chapter number, so it changes as the
+   reader scrolls through the 9 features instead of staying static. */
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.washTop {
+  position: absolute;
+  top: -22%;
+  right: -10%;
+  width: 36%;
+  padding-bottom: 36%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
+  opacity: calc(0.34 * var(--glow-strength));
+}
+
+.washBottom {
+  position: absolute;
+  bottom: -16%;
+  left: -12%;
+  width: 30%;
+  padding-bottom: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
+  opacity: calc(0.8 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.045 * var(--grain-strength));
+}
+
+.markWrap {
+  position: absolute;
+  top: 50%;
+  right: -3%;
+  transform: translateY(-50%);
+  width: 60%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.chapterMark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(12rem, 24vw, 22rem);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.09;
+  user-select: none;
+  white-space: nowrap;
+}

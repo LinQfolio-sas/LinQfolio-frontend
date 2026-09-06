@@ -1,0 +1,356 @@
+/* ============================================================================
+   Bandeau « on se retrouve dans l'app ». C'est un îlot de nuit : il reste
+   sombre dans les deux thèmes. On redéfinit donc localement les tokens de
+   surface sur les constantes de marque, et tout ce qui suit dans le fichier
+   continue de s'écrire avec `--paper` / `--ink` sans rien savoir du thème.
+   ========================================================================= */
+
+.section {
+  /* Le signet de la section : le rose de soie du ruban. Il tient le rôle
+     d'accent chaud sur la nuit violette — un lilas s'y serait fondu. */
+  --marker: var(--brand-rose);
+  --marker-soft: var(--brand-rose-light);
+
+  /* Îlot : ces valeurs ne basculent pas. */
+  --paper: var(--brand-cream);
+  --surface: var(--brand-cream);
+  --ink: var(--brand-ink);
+  --ink-4: color-mix(in srgb, var(--brand-ink) 72%, transparent);
+  --line: color-mix(in srgb, var(--brand-ink) 12%, transparent);
+  --glow: var(--brand-glow);
+  --shadow-rgb: 9 3 20;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    165deg,
+    var(--cta-top) 0%,
+    var(--cta-mid) 55%,
+    var(--cta-end) 100%
+  );
+  padding: clamp(5.5rem, 10vw, 8rem) 1.5rem clamp(6rem, 11vw, 9rem);
+}
+
+/* En clair le bandeau tranche sur la page crème, presque noir. En sombre il
+   doit au contraire remonter au-dessus du fond de page, sinon la section
+   s'efface : on garde la nuit, on monte le violet. */
+.section {
+  --cta-top: var(--brand-ink);
+  --cta-mid: var(--brand-plum);
+  --cta-end: var(--brand-night);
+}
+
+:global(html[data-theme="dark"]) .section {
+  --cta-top: #40197a;
+  --cta-mid: #2b1059;
+  --cta-end: #200c46;
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-theme="light"])) .section {
+    --cta-top: #40197a;
+    --cta-mid: #2b1059;
+    --cta-end: #200c46;
+  }
+}
+
+.wash {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+  width: 46rem;
+  padding-bottom: 46rem;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 30%, var(--glow) 0%, transparent 62%);
+  opacity: 0.22;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--paper) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: 0.05;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--marker);
+  margin: 0 0 1rem;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.25rem, 2.6vw + 1.5rem, 3.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  margin: 0;
+}
+
+.subhead {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.35vw + 0.95rem, 1.0625rem);
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--paper) 82%, transparent);
+  max-width: 30rem;
+  margin: 1.25rem 0 0;
+}
+
+/* ---------- book stage ---------- */
+
+.stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: clamp(3.5rem, 7vw, 4.75rem) 0 clamp(3rem, 6vw, 4rem);
+}
+
+.book {
+  position: relative;
+  width: clamp(11.5rem, 22vw, 13.5rem);
+  aspect-ratio: 2 / 3;
+}
+
+.bookCover {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border-radius: 0.5rem 0.625rem 0.625rem 0.5rem;
+  background: linear-gradient(
+    155deg,
+    var(--brand-violet) 0%,
+    var(--brand-plum) 78%,
+    var(--brand-night) 100%
+  );
+  box-shadow:
+    0 2.5rem 4rem -1.75rem rgb(var(--shadow-rgb) / 0.7),
+    inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+.bookLogo {
+  display: block;
+  width: 46%;
+  height: auto;
+}
+
+.pagesEdge {
+  position: absolute;
+  z-index: 0;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  right: -0.4rem;
+  width: 0.5rem;
+  border-radius: 0 0.35rem 0.35rem 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--paper) 0,
+    var(--paper) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 4px
+  );
+  box-shadow: 0.125rem 0 0.5rem -0.25rem rgb(var(--shadow-rgb) / 0.5);
+}
+
+.qrCard {
+  position: absolute;
+  z-index: 3;
+  bottom: -1.5rem;
+  left: -1.875rem;
+  width: 6.25rem;
+  padding: 0.5625rem 0.5625rem 0.5rem;
+  border-radius: 0.625rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 0.75rem 1.25rem -0.75rem rgb(var(--shadow-rgb) / 0.6);
+  transform: rotate(-7deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.qrImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.qrLabel {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink-4);
+}
+
+@media (max-width: 26rem) {
+  .qrCard {
+    width: 5.5rem;
+    left: -1.25rem;
+    bottom: -1.25rem;
+  }
+}
+
+.ribbon {
+  position: absolute;
+  z-index: 2;
+  top: -0.125rem;
+  left: 50%;
+  width: 0.875rem;
+  height: 3.5rem;
+  transform: translateX(-50%) rotate(-2deg);
+  transform-origin: top center;
+  background: linear-gradient(180deg, var(--marker-soft) 0%, var(--marker) 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+  box-shadow: 0 0.5rem 1rem -0.5rem rgb(var(--shadow-rgb) / 0.6);
+}
+
+/* ---------- marginalia notes ---------- */
+
+.note {
+  position: absolute;
+  z-index: 3;
+  width: 9.5rem;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 0.75rem 1.5rem -0.75rem rgb(var(--shadow-rgb) / 0.55);
+}
+
+.noteOne {
+  top: 8%;
+  left: 2%;
+}
+
+.noteTwo {
+  bottom: 6%;
+  right: 1%;
+}
+
+@media (min-width: 26rem) {
+  .noteOne {
+    left: -2%;
+  }
+  .noteTwo {
+    right: -3%;
+  }
+}
+
+@media (max-width: 26rem) {
+  .note {
+    display: none;
+  }
+}
+
+/* ---------- actions ---------- */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.storeLabel {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--paper);
+  margin: 0;
+}
+
+.microcopy {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--paper) 68%, transparent);
+  margin: 0.875rem 0 0;
+}
+
+.storeRow {
+  display: flex;
+  gap: 0.875rem;
+  margin-top: 1.125rem;
+}
+
+.storeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.875rem 1.75rem;
+  text-decoration: none;
+  border: 1.5px solid var(--paper);
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.storeBadge:hover {
+  background: var(--marker-soft);
+  border-color: var(--marker-soft);
+  transform: translateY(-1px);
+}
+
+.storeBadge:focus-visible {
+  outline: 2px solid var(--brand-glow);
+  outline-offset: 3px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 30rem) {
+  .headline {
+    font-size: clamp(1.875rem, 6.5vw + 0.6rem, 2.375rem);
+  }
+
+  .storeRow {
+    flex-direction: column;
+    width: 100%;
+    max-width: 16rem;
+  }
+
+  .storeBadge {
+    justify-content: center;
+  }
+}

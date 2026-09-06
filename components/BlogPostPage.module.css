@@ -1,0 +1,786 @@
+/* =========================================================
+   Le journal — un texte
+   Same vocabulary as the index: the book object,
+the folio,
+the violet ramp. The body is set in the display serif,
+which is what the site uses whenever it quotes a book.
+   ========================================================= */
+
+.page {
+  --edge: var(--line);
+  --muted: var(--ink-3);
+  --muted-soft: var(--ink-4);
+  --faint: var(--ink-4);
+  --measure: 36rem;
+  --blog-head: 44rem;
+  position: relative;
+  background: var(--paper);
+}
+
+/* ---------- chapter progress (system: lilac track,
+violet fill) ---------- */
+
+.progressTrack {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 0.25rem;
+  background: var(--lilac);
+}
+
+.progressFill {
+  height: 100%;
+  transform-origin: 0 50%;
+  background: var(--accent);
+}
+
+/* ---------- shared type ---------- */
+
+.eyebrow,
+.eyebrowCentered {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.875rem;
+}
+
+.eyebrowCentered {
+  text-align: center;
+}
+
+.folio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8125rem;
+  color: var(--faint);
+  margin: 0;
+}
+
+.folioRule {
+  flex: none;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--fill-soft);
+}
+
+.dot::before {
+  content: "\00b7";
+  margin: 0 0.4rem;
+}
+
+.back:focus-visible,
+.nextLink:focus-visible,
+.body a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- head ---------- */
+
+/* One shell,
+so the head,
+the text column and the colophon all hang
+   from the same left edge,
+with the book out in the right margin. */
+.article {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0 1.5rem clamp(3rem, 6vw, 4.5rem);
+}
+
+.head {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+  align-items: center;
+  padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 52rem) {
+  .head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* Same treatment as the section heroes,
+kept inside the head so the
+   book's shadow -- which lives here too -- is never clipped. */
+.washTop {
+  position: absolute;
+  top: -22%;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: min(26rem, 88%);
+  padding-bottom: min(26rem, 88%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
+  opacity: calc(0.32 * var(--glow-strength));
+}
+
+.washBottom {
+  position: absolute;
+  bottom: -10%;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: min(20rem, 62%);
+  padding-bottom: min(20rem, 62%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
+  opacity: calc(0.7 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.045 * var(--grain-strength));
+  /* no rule separates the head from the text, so the grain fades out
+     instead of stopping on a hard line */
+  mask-image: linear-gradient(to bottom, black 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 62%, transparent 100%);
+}
+
+.headText,
+.headBook {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.headBook {
+  justify-self: center;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted-soft);
+  text-decoration: none;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  transition: color 0.15s ease;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.backArrow {
+  transition: transform 0.2s ease;
+}
+
+.back:hover .backArrow {
+  transform: translateX(-3px);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 2.2vw + 1.4rem, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lead {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 30rem;
+  margin: 1.125rem 0 0;
+}
+
+.headText .folio {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.langNotice {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--accent-strong);
+  background: var(--lilac);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0 0;
+  max-width: 30rem;
+}
+
+/* ---------- the book ---------- */
+
+.book {
+  /* Îlot : un livre est un objet, sa reliure et sa typo ne basculent pas avec
+     le thème de la page. Les tokens sont donc figés sur les constantes de
+     marque pour tout ce que la couverture contient. */
+  --paper: var(--brand-cream);
+  --ink: var(--brand-ink);
+  --ink-4: color-mix(in srgb, var(--brand-ink) 72%, transparent);
+  --line: color-mix(in srgb, var(--brand-ink) 10%, transparent);
+  --fill-soft: color-mix(in srgb, var(--brand-ink) 22%, transparent);
+  --shadow-rgb: 9 3 20;
+
+  position: relative;
+  width: clamp(9rem, 20vw, 11.5rem);
+  aspect-ratio: 2 / 3;
+}
+
+.bookCover {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem 0.625rem 0.625rem 0.5rem;
+  background: var(--cover);
+  padding: 1.125rem 1rem 1.125rem 1.375rem;
+  overflow: hidden;
+  box-shadow:
+    0 1.75rem 3rem -1.5rem rgb(var(--shadow-rgb) / 0.6),
+    inset 0 0 0 1px var(--object-edge);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Flat cloth,
+one colour. The fold at the spine is shading,
+not a second hue. */
+.spineShade {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1.25rem;
+  background: rgb(var(--shadow-rgb) / 0.16);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pagesEdge {
+  position: absolute;
+  z-index: 0;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  right: -0.35rem;
+  width: 0.45rem;
+  border-radius: 0 0.3rem 0.3rem 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--paper) 0,
+    var(--paper) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 4px
+  );
+  box-shadow: 0.125rem 0 0.5rem -0.25rem rgb(var(--shadow-rgb) / 0.5);
+}
+
+.bookRubric {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 88%, transparent);
+  margin: 0 0 auto;
+}
+
+.bookTitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.24;
+  color: var(--paper);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.bookRule {
+  position: relative;
+  z-index: 1;
+  width: 1.75rem;
+  height: 1px;
+  margin: 0.75rem 0 0.5rem;
+  background: color-mix(in srgb, var(--paper) 38%, transparent);
+}
+
+.bookAuthor {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: color-mix(in srgb, var(--paper) 84%, transparent);
+  margin: 0;
+}
+
+/* a pale binding takes ink type */
+.bookCover[data-tone="light"] {
+  box-shadow:
+    0 1.5rem 2.5rem -1.25rem rgb(var(--shadow-rgb) / 0.4),
+    inset 0 0 0 1px var(--line);
+}
+
+.bookCover[data-tone="light"] .bookTitle {
+  color: var(--ink);
+}
+
+.bookCover[data-tone="light"] .bookRubric {
+  color: var(--ink-4);
+}
+
+.bookCover[data-tone="light"] .bookAuthor {
+  color: var(--ink-4);
+}
+
+.bookCover[data-tone="light"] .bookRule {
+  background: var(--fill-soft);
+}
+
+.bookCover[data-tone="light"] .spineShade {
+  background: rgb(var(--shadow-rgb) / 0.07);
+  border-right-color: rgba(255, 255, 255, 0.55);
+}
+
+/* titles stay inside the cover however long they run */
+.bookTitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+/* ---------- body ---------- */
+
+.body {
+  max-width: var(--measure);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+}
+
+.body p {
+  margin: 0 0 1.5rem;
+}
+
+.body > p:first-child::first-letter {
+  float: left;
+  font-size: 4.25em;
+  line-height: 0.82;
+  font-weight: 500;
+  padding: 0.04em 0.06em 0 0;
+  color: var(--accent-strong);
+}
+
+.body h2,
+.body h3,
+.body h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 2.75rem 0 0.875rem;
+}
+
+.body h2 {
+  font-size: 1.125rem;
+}
+
+.body h3 {
+  font-size: 1rem;
+}
+
+.body h4 {
+  font-size: 0.8125rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.body strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.body em {
+  font-style: italic;
+}
+
+.body a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 0.15s ease;
+}
+
+.body a:hover {
+  color: var(--accent);
+}
+
+.body ul,
+.body ol {
+  margin: 0 0 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.body li {
+  margin-bottom: 0.625rem;
+}
+
+.body ul {
+  list-style: none;
+}
+
+.body ul li {
+  position: relative;
+}
+
+.body ul li::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.body ol {
+  list-style: decimal;
+}
+
+.body ol li::marker {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* quotes take the site's quote style: display italic,
+violet rule */
+.body blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent-line);
+  font-style: italic;
+  font-size: 1.3125rem;
+  line-height: 1.55;
+  color: var(--accent-strong);
+}
+
+.body blockquote p {
+  margin: 0;
+}
+
+.body hr {
+  margin: 2.5rem 0;
+  border: 0;
+  height: 1px;
+  background: var(--edge);
+}
+
+.body img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border-radius: 1.25rem;
+}
+
+.body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85em;
+  padding: 0.1em 0.35em;
+  border-radius: 0.375rem;
+  background: var(--lilac);
+  color: var(--accent-strong);
+}
+
+.endMark {
+  max-width: var(--measure);
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  font-size: 1.25rem;
+  color: var(--accent-line);
+}
+
+/* ---------- editorial blocks ---------- */
+
+/* Octave's aside: the site's marginalia voice,
+in the hand face. */
+.body :global(.lqf-octave) {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  margin: 2.25rem 0;
+  padding: 1.125rem 1.25rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  background: var(--lilac);
+}
+
+.body :global(.lqf-owl) {
+  flex: none;
+  margin-top: 0.125rem;
+  color: var(--accent);
+}
+
+.body :global(.lqf-octave-body) {
+  min-width: 0;
+}
+
+.body :global(.lqf-octave-name) {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin: 0 0 0.375rem;
+}
+
+.body :global(.lqf-octave p:not(.lqf-octave-name)) {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  line-height: 1.35;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---------- figures ---------- */
+
+.body :global(.lqf-figure) {
+  /* figures run wider than the text measure, up to the head's column */
+  width: min(var(--blog-head, 44rem), 100%);
+  margin: 2.75rem 0;
+}
+
+.body :global(.lqf-figure figcaption) {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--muted-soft);
+  margin-top: 1rem;
+}
+
+/* the Reading DNA radar: one reader,
+one hue,
+every value direct-labelled */
+.body :global(.lqf-radar) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.body :global(.lqf-radar-name) {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  fill: var(--ink-4);
+}
+
+.body :global(.lqf-radar-value) {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+/* ---------- stat row ---------- */
+
+.body :global(.lqf-tiles) {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 34rem) {
+  .body :global(.lqf-tiles) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.body :global(.lqf-tile) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--blog-tile-edge, var(--line));
+  border-radius: 1.25rem;
+  background: var(--surface);
+}
+
+/* a hero value is set in the sans,
+never the display face */
+.body :global(.lqf-meter-value) {
+  font-family: var(--font-body);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 0.625rem;
+}
+
+/* a ratio against a limit: the track is a lighter step of the same ramp */
+.body :global(.lqf-meter-track) {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.body :global(.lqf-meter-fill) {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.body :global(.lqf-tile-mark) {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--accent);
+  margin-bottom: 0.375rem;
+}
+
+.body :global(.lqf-tile-title) {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.25rem;
+}
+
+.body :global(.lqf-tile-label) {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted-soft);
+  margin: 0;
+}
+
+/* ---------- read next ---------- */
+
+.next {
+  background: var(--paper);
+  border-top: 1px solid var(--edge);
+  padding: clamp(4rem, 8vw, 5.5rem) 1.5rem clamp(4.5rem, 8vw, 6rem);
+}
+
+.nextInner {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.nextList {
+  list-style: none;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 44rem) {
+  .nextList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.nextItem {
+  min-width: 0;
+}
+
+.nextLink {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+  text-decoration: none;
+}
+
+.nextBook {
+  flex: none;
+}
+
+.nextBook .book {
+  width: clamp(6rem, 14vw, 7.5rem);
+}
+
+.nextText {
+  min-width: 0;
+}
+
+.nextExcerpt {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--muted-soft);
+  margin: 0 0 1rem;
+}
+
+.nextLink:hover .bookCover {
+  transform: translateY(-0.375rem);
+  box-shadow:
+    0 2.25rem 3rem -1.25rem rgb(var(--shadow-rgb) / 0.6),
+    inset 0 0 0 1px var(--object-edge-strong);
+}
+
+/* ---------- responsive / motion ---------- */
+
+@media (max-width: 36rem) {
+  .eyebrow,
+  .eyebrowCentered {
+    font-size: 0.75rem;
+  }
+
+  .title {
+    font-size: clamp(1.75rem, 6vw + 0.6rem, 2.25rem);
+  }
+
+  .article,
+  .next {
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookCover,
+.backArrow,
+.back,
+.body a {
+    transition: none;
+  }
+
+  .back:hover .backArrow,
+.nextLink:hover .bookCover {
+    transform: none;
+  }
+}

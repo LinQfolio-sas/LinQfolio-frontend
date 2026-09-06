@@ -1,0 +1,675 @@
+/* =========================================================
+   Le journal — index
+   Built from the site's own vocabulary: the book object from
+   Cta (2:3,
+spine left,
+page edges),
+the bookmark from Why,
+the Caveat marginalia note,
+the folio,
+and the violet ramp.
+   Flat bindings,
+no new colours,
+no photography.
+   ========================================================= */
+
+.page {
+  --edge: var(--line);
+  --muted: var(--ink-3);
+  --muted-soft: var(--ink-4);
+  --faint: var(--ink-4);
+  background: var(--paper);
+}
+
+/* ---------- shared type (system) ---------- */
+
+.eyebrow,
+.eyebrowCentered {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.875rem;
+}
+
+.eyebrowCentered {
+  text-align: center;
+}
+
+.kicker {
+  display: block;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.125rem, 2.4vw + 1.4rem, 3.125rem);
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.lead {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 27rem;
+  margin: 1.125rem 0 0;
+}
+
+.folio,
+.slotFolio {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8125rem;
+  color: var(--faint);
+  margin: 0;
+}
+
+.folioRule {
+  flex: none;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--fill-soft);
+}
+
+.dot::before {
+  content: "\00b7";
+  margin: 0 0.4rem;
+}
+
+/* ---------- buttons (system) ---------- */
+
+.btnPrimary,
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.9375rem 1.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btnPrimary {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  border: 1.5px solid var(--accent-fill);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-fill-hover);
+  border-color: var(--accent-strong);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--control-line);
+}
+
+.btnSecondary:hover {
+  background: var(--lilac);
+  border-color: var(--line);
+}
+
+.btnPrimary:focus-visible,
+.btnSecondary:focus-visible,
+.chip:focus-visible,
+.chipOn:focus-visible,
+.titleLink:focus-visible,
+.slotLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- hero ----------
+   One tall section,
+as on /a-propos and /faq: the nav,
+the masthead and
+   the featured piece all sit inside it,
+so the washes have room to fade
+   out before the edge instead of being sliced by overflow. */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--paper);
+  padding-bottom: clamp(4rem, 8vw, 5.5rem);
+}
+
+.washTop {
+  position: absolute;
+  top: -24%;
+  right: -14%;
+  z-index: 0;
+  pointer-events: none;
+  width: 36%;
+  padding-bottom: 36%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
+  opacity: calc(0.32 * var(--glow-strength));
+}
+
+.washBottom {
+  position: absolute;
+  bottom: 2%;
+  left: -14%;
+  z-index: 0;
+  pointer-events: none;
+  width: 28%;
+  padding-bottom: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
+  opacity: calc(0.7 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.045 * var(--grain-strength));
+}
+
+/* the guillemet: the mark this site puts around everything it quotes */
+.markQuote {
+  position: absolute;
+  top: -3rem;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(15rem, 28vw, 24rem);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.09;
+  user-select: none;
+}
+
+.mastheadInner {
+  position: relative;
+  z-index: 1;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem 0;
+  text-align: center;
+}
+
+.mastheadInner .lead {
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+/* ---------- à la une ---------- */
+
+.featureInner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: clamp(3rem, 6vw, 4rem);
+  max-width: 62rem;
+  /* single margin declaration: a later `margin: 0 auto` would wipe the top */
+  margin: clamp(3.5rem, 7vw, 5.5rem) auto 0;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 52rem) {
+  .featureInner {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    gap: clamp(3.5rem, 7vw, 5.5rem);
+  }
+}
+
+.stage {
+  position: relative;
+  flex: none;
+}
+
+.stageLink {
+  display: block;
+  text-decoration: none;
+}
+
+/* the bookmark marks the piece to open */
+.ribbon {
+  position: absolute;
+  z-index: 3;
+  top: -1.25rem;
+  right: 17%;
+  width: 1.125rem;
+  height: 5.25rem;
+  background: var(--brand-plum);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+  box-shadow: 0 0.5rem 1rem -0.5rem rgb(var(--shadow-rgb) / 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ribbon {
+    animation: ribbonDrop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  }
+}
+
+@keyframes ribbonDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* marginalia,
+the system's Caveat note */
+.note {
+  position: absolute;
+  z-index: 4;
+  bottom: -1.25rem;
+  right: -3.25rem;
+  width: 9rem;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--edge);
+  box-shadow: 0 0.75rem 1.5rem -0.75rem rgb(var(--shadow-rgb) / 0.35);
+  transform: rotate(-3deg);
+}
+
+@media (max-width: 34rem) {
+  .note {
+    right: -1rem;
+    /* clears the signature printed at the foot of the cover */
+    bottom: -2.5rem;
+    width: 7.5rem;
+    font-size: 1rem;
+  }
+}
+
+.featureText {
+  min-width: 0;
+}
+
+.featureTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.875rem, 1.9vw + 1.4rem, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.titleLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.titleLink:hover {
+  color: var(--accent-strong);
+}
+
+.featureText .lead,
+.featureTitle {
+  max-width: 32rem;
+}
+
+.featureText .folio {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.featureText .btnPrimary {
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+/* ---------- the book ---------- */
+
+.book,
+.bookLarge {
+  /* Îlot : un livre est un objet, sa reliure et sa typo ne basculent pas avec
+     le thème de la page. Les tokens sont donc figés sur les constantes de
+     marque pour tout ce que la couverture contient. */
+  --paper: var(--brand-cream);
+  --ink: var(--brand-ink);
+  --ink-4: color-mix(in srgb, var(--brand-ink) 72%, transparent);
+  --line: color-mix(in srgb, var(--brand-ink) 10%, transparent);
+  --fill-soft: color-mix(in srgb, var(--brand-ink) 22%, transparent);
+  --shadow-rgb: 9 3 20;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+.bookLarge {
+  width: clamp(12rem, 26vw, 15.5rem);
+}
+
+.bookCover {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem 0.625rem 0.625rem 0.5rem;
+  background: var(--cover);
+  padding: 1.125rem 1rem 1.125rem 1.375rem;
+  overflow: hidden;
+  box-shadow:
+    0 1.5rem 2.5rem -1.25rem rgb(var(--shadow-rgb) / 0.55),
+    inset 0 0 0 1px var(--object-edge);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bookLarge .bookCover {
+  padding: 1.5rem 1.25rem 1.5rem 1.75rem;
+  box-shadow:
+    0 2.5rem 4rem -1.75rem rgb(var(--shadow-rgb) / 0.7),
+    inset 0 0 0 1px var(--object-edge);
+}
+
+/* the fold of the spine,
+and the hairline where the cover turns */
+/* Flat cloth,
+one colour. The fold at the spine is shading,
+not a second hue. */
+.spineShade {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1.25rem;
+  background: rgb(var(--shadow-rgb) / 0.16);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pagesEdge {
+  position: absolute;
+  z-index: 0;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  right: -0.35rem;
+  width: 0.45rem;
+  border-radius: 0 0.3rem 0.3rem 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--paper) 0,
+    var(--paper) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 4px
+  );
+  box-shadow: 0.125rem 0 0.5rem -0.25rem rgb(var(--shadow-rgb) / 0.5);
+}
+
+.bookRubric {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 88%, transparent);
+  margin: 0 0 auto;
+}
+
+.bookTitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.0625rem;
+  line-height: 1.24;
+  letter-spacing: -0.005em;
+  color: var(--paper);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.bookLarge .bookTitle {
+  font-size: clamp(1.25rem, 1.9vw + 0.7rem, 1.625rem);
+  line-height: 1.2;
+}
+
+.bookRule {
+  position: relative;
+  z-index: 1;
+  width: 1.75rem;
+  height: 1px;
+  margin: 0.75rem 0 0.5rem;
+  background: color-mix(in srgb, var(--paper) 38%, transparent);
+}
+
+.bookAuthor {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: color-mix(in srgb, var(--paper) 84%, transparent);
+  margin: 0;
+}
+
+/* a pale binding takes ink type */
+.bookCover[data-tone="light"] {
+  box-shadow:
+    0 1.5rem 2.5rem -1.25rem rgb(var(--shadow-rgb) / 0.4),
+    inset 0 0 0 1px var(--line);
+}
+
+.bookCover[data-tone="light"] .bookTitle {
+  color: var(--ink);
+}
+
+.bookCover[data-tone="light"] .bookRubric {
+  color: var(--ink-4);
+}
+
+.bookCover[data-tone="light"] .bookAuthor {
+  color: var(--ink-4);
+}
+
+.bookCover[data-tone="light"] .bookRule {
+  background: var(--fill-soft);
+}
+
+.bookCover[data-tone="light"] .spineShade {
+  background: rgb(var(--shadow-rgb) / 0.07);
+  border-right-color: rgba(255, 255, 255, 0.55);
+}
+
+/* titles stay inside the cover however long they run */
+.bookTitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+.bookLarge .bookTitle {
+  -webkit-line-clamp: 7;
+}
+
+/* ---------- the shelf ---------- */
+
+.shelf {
+  position: relative;
+  background: var(--paper);
+  padding: clamp(4rem, 8vw, 5.5rem) 1.5rem clamp(5rem, 9vw, 7rem);
+  border-top: 1px solid var(--edge);
+}
+
+.shelfInner {
+  max-width: 62rem;
+  margin: 0 auto;
+}
+
+.eyebrowCentered {
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.chip,
+.chipOn {
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.chip {
+  background: var(--lilac);
+  color: var(--accent);
+}
+
+.chip:hover {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+
+.chipOn {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+/* Tracks are capped and the row is centred,
+so the shelf reads the same
+   whether it holds one book or a dozen. */
+.row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1.25rem, 2.5vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 11rem));
+  justify-content: center;
+}
+
+.slot {
+  min-width: 0;
+}
+
+.slotLink {
+  display: block;
+  text-decoration: none;
+}
+
+.slotLink:hover .bookCover {
+  transform: translateY(-0.5rem);
+  box-shadow:
+    0 2.25rem 3rem -1.25rem rgb(var(--shadow-rgb) / 0.6),
+    inset 0 0 0 1px var(--object-edge-strong);
+}
+
+.slotFolio {
+  margin-top: 1rem;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.slotFolio .folioRule {
+  width: 1rem;
+}
+
+/* ---------- empty ---------- */
+
+.empty {
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 4rem) 0;
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.375rem, 1.1vw + 1.1rem, 1.75rem);
+  color: var(--ink);
+  margin: 0;
+}
+
+.emptyBody {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--muted-soft);
+  margin: 0.5rem 0 1.75rem;
+}
+
+/* ---------- responsive / motion ---------- */
+
+@media (max-width: 36rem) {
+  .eyebrow,
+  .eyebrowCentered {
+    font-size: 0.75rem;
+  }
+
+  .headline {
+    font-size: clamp(1.75rem, 6vw + 0.6rem, 2.25rem);
+  }
+
+  .featureInner,
+  .shelf {
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookCover,
+.btnPrimary,
+.btnSecondary,
+.titleLink,
+.chip,
+.chipOn {
+    transition: none;
+  }
+
+  .slotLink:hover .bookCover {
+    transform: none;
+  }
+}

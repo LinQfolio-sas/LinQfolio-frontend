@@ -1,0 +1,886 @@
+/* ---------- layout shell ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100svh;
+  padding-bottom: 4rem;
+  background: var(--paper);
+}
+
+/* Les halos. Le hero n'a plus de vague floue : ce sont eux, et eux seuls, qui
+   portent le violet derrière le champ de marques. */
+.washTop {
+  position: absolute;
+  top: -20%;
+  right: -12%;
+  z-index: 0;
+  pointer-events: none;
+  width: 40%;
+  padding-bottom: 40%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
+  opacity: calc(0.3 * var(--glow-strength));
+}
+
+.washMid {
+  position: absolute;
+  top: 32%;
+  left: -12%;
+  z-index: 0;
+  pointer-events: none;
+  width: 30%;
+  padding-bottom: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 58% 46%, var(--glow) 0%, var(--glow-fade) 66%);
+  opacity: calc(0.24 * var(--glow-strength));
+}
+
+.washBottom {
+  position: absolute;
+  bottom: -16%;
+  left: 4%;
+  z-index: 0;
+  pointer-events: none;
+  width: 36%;
+  padding-bottom: 36%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
+  opacity: calc(0.6 * var(--glow-strength));
+}
+
+/* ---------- le champ de marques ---------- */
+
+.marks {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mark {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  color: var(--accent);
+  opacity: var(--op);
+  transform: translate(-50%, -50%) rotate(var(--rot));
+}
+
+.markGlyph {
+  /* Le fleuron et la double flèche ne sont pas dans le sous-ensemble latin de
+     Newsreader : la pile de repli leur évite le carré vide. */
+  font-family: var(--font-display), "Apple Symbols", "Segoe UI Symbol", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--size);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Des aplats, comme les glyphes voisins : c'est ce qui fait tenir les deux
+   familles ensemble. L'opacité est portée par le <svg> lui-même, donc les
+   formes qui se chevauchent à l'intérieur d'un symbole composent d'abord et
+   ne laissent aucune couture. */
+.markSymbol {
+  width: var(--size);
+  height: auto;
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Sous 64rem il ne reste que les marques qui déclarent un repli : sept signes
+   en marge, le reste encombrerait un écran de téléphone. */
+@media (max-width: 63.999rem) {
+  .mark {
+    left: var(--x-sm, var(--x));
+    top: var(--y-sm, var(--y));
+  }
+
+  .markGlyph {
+    font-size: var(--size-sm, var(--size));
+  }
+
+  .markSymbol {
+    width: var(--size-sm, var(--size));
+  }
+
+  .markWide {
+    display: none;
+  }
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.045 * var(--grain-strength));
+}
+
+/* ---------- hero content ---------- */
+
+.content {
+  position: relative;
+  z-index: 10;
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Le titre est l'image de la page : il occupe la largeur, l'interlignage se
+   resserre sous l'oeil, et deux lectrices viennent se poser sur sa ligne de
+   pied. D'où le bloc dédié — les figures se calent sur le titre lui-même,
+   pas sur le hero, donc elles tiennent quelle que soit la hauteur d'écran ou
+   la longueur de la phrase traduite. */
+.masthead {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.75rem, 7.5vw, 8.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.headlineLine {
+  display: block;
+}
+
+.perch {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  display: none;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 20px rgb(var(--shadow-rgb) / 0.16));
+}
+
+.perch img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Elles mordent de 2.5rem sur la colonne de texte : à cette échelle la ligne
+   la plus longue laisse encore de la marge, donc le chevauchement se lit sans
+   qu'aucune lettre ne soit touchée. */
+/* La largeur suit la fenêtre plutôt que le rem : la figure doit tenir dans la
+   marge qui reste à gauche de la colonne, et cette marge se referme vite entre
+   1200 et 1400 px. */
+.perchArmchair {
+  right: calc(100% - 2rem);
+  width: clamp(8rem, 11vw, 13rem);
+}
+
+.perchPillow {
+  left: calc(100% - 2rem);
+  width: clamp(9rem, 12.5vw, 15rem);
+}
+
+@media (min-width: 75rem) {
+  .perch {
+    display: block;
+  }
+}
+
+.highlightWord {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.highlightMark {
+  position: absolute;
+  left: -0.05em;
+  right: -0.08em;
+  bottom: 0.06em;
+  height: 0.46em;
+  background: var(--highlight);
+  mix-blend-mode: var(--highlight-blend);
+  border-radius: 1px;
+  clip-path: polygon(
+    0% 22%, 5% 2%, 15% 18%, 27% 0%, 39% 20%, 51% 4%,
+    63% 18%, 75% 2%, 87% 20%, 100% 6%, 100% 100%, 0% 100%
+  );
+  transform: scaleX(1);
+  transform-origin: left center;
+  z-index: -1;
+}
+
+.subhead {
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem);
+  line-height: 1.65;
+  color: var(--ink-3);
+  max-width: 34rem;
+  margin: 2.25rem 0 0;
+}
+
+.ctaRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+@media (min-width: 560px) {
+  .ctaRow {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: none;
+    width: auto;
+  }
+}
+
+.btnPrimary,
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.9375rem 1.875rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btnPrimary {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  border: 1.5px solid var(--accent-fill);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-fill-hover);
+  border-color: var(--accent-strong);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--control-line);
+}
+
+.btnSecondary:hover {
+  background: var(--lilac);
+  border-color: var(--line);
+}
+
+.btnPrimary:focus-visible,
+.btnSecondary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- visual stage ---------- */
+
+.stage {
+  position: relative;
+  z-index: 5;
+  margin: clamp(3.25rem, 5.5vw, 4.25rem) auto 0;
+  width: min(100%, 30rem);
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.stageInner {
+  position: relative;
+  width: 100%;
+  max-width: 21rem;
+}
+
+.glow {
+  position: absolute;
+  top: 8%;
+  right: -18%;
+  width: 60%;
+  padding-bottom: 60%;
+  border-radius: 50%;
+  background: var(--glow);
+  filter: blur(48px);
+  opacity: 0.45;
+  z-index: 0;
+}
+
+.heroPhone {
+  position: relative;
+  z-index: 1;
+}
+
+.phoneContent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2.25rem 1.125rem 1.75rem;
+}
+
+.phoneSpacer {
+  flex: 1 1 auto;
+  min-height: 0.75rem;
+}
+
+.tabBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: none;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--line);
+}
+
+.tabItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.5625rem;
+  color: var(--ink-4);
+}
+
+.tabItemActive {
+  color: var(--accent);
+}
+
+.feedHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.feedTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+
+.feedSearch {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex: none;
+}
+
+.postCard {
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  padding: 0.875rem;
+  text-align: left;
+}
+
+.postCardAlt {
+  margin-top: 0.75rem;
+  padding-bottom: 0;
+}
+
+.chipRow {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.875rem;
+}
+
+.chip {
+  flex: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.3rem 0.625rem;
+  border-radius: 999px;
+  color: var(--ink-4);
+  background: var(--lilac);
+}
+
+.chipActive {
+  color: var(--on-accent);
+  background: var(--accent-fill);
+}
+
+.coverAlt {
+  background: linear-gradient(155deg, var(--brand-gold) 0%, var(--brand-plum) 100%);
+}
+
+.postHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.postHeadText {
+  line-height: 1.25;
+}
+
+.postName {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.postMeta {
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+.bookRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.75rem;
+}
+
+.cover {
+  width: 2.25rem;
+  height: 3.125rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(155deg, var(--brand-violet) 0%, var(--brand-plum) 100%);
+  flex: none;
+  position: relative;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  right: 0.3rem;
+  top: 0.45rem;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 5px 0 rgba(255, 255, 255, 0.4), 0 10px 0 rgba(255, 255, 255, 0.28);
+}
+
+.bookText {
+  min-width: 0;
+}
+
+.bookTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.bookAuthor {
+  font-size: 0.6875rem;
+  color: var(--ink-3);
+  margin-top: 0.125rem;
+}
+
+.progressTrack {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progressFill {
+  height: 100%;
+  width: 62%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 0.875rem;
+}
+
+.quoteMark {
+  background: var(--lilac);
+  padding: 0.05em 0.15em;
+  border-radius: 0.2em;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+.actions span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ---------- marginalia ---------- */
+
+.note {
+  position: absolute;
+  z-index: 3;
+  width: 9.25rem;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  box-shadow: 0 0.75rem 1.5rem -0.75rem rgb(var(--shadow-rgb) / 0.35);
+}
+
+/* La note reste au-dessus du téléphone sans monter dans la rangée de boutons :
+   c'est la marge la plus serrée de la composition. */
+.noteOne {
+  top: -2rem;
+  left: -2.75rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  --rot: -4deg;
+  transform: rotate(var(--rot));
+}
+
+.noteTwo {
+  bottom: -1.5rem;
+  right: -2.5rem;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  --rot: 3deg;
+  transform: rotate(var(--rot));
+}
+
+@media (max-width: 30rem) {
+  .note {
+    font-size: 0.9375rem;
+    padding: 0.4rem 0.7rem;
+  }
+  .noteOne {
+    left: -1rem;
+  }
+  .noteTwo {
+    right: -0.75rem;
+  }
+}
+
+@media (max-width: 23rem) {
+  .note {
+    display: none;
+  }
+}
+
+/* ---------- orbit: illustrations + glass cards ---------- */
+
+.orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .orbit {
+    display: block;
+  }
+}
+
+.orbitFigure {
+  position: absolute;
+  filter: drop-shadow(0 14px 20px rgb(var(--shadow-rgb) / 0.16));
+}
+
+.orbitFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Ce qui reste en orbite tient la moitié basse, autour du téléphone, à des
+   tailles franchement différentes : trois vignettes égales font du confetti,
+   une grande et deux petites font une composition. */
+.figSwap {
+  top: 52%;
+  left: 8%;
+  width: 8.5rem;
+  --rot: -4deg;
+  transform: rotate(var(--rot));
+}
+
+.figPhone {
+  top: 70%;
+  right: 9%;
+  width: 6.5rem;
+  --rot: 3deg;
+  transform: rotate(var(--rot));
+}
+
+.figCross {
+  bottom: 4%;
+  left: 20%;
+  width: 5.5rem;
+  --rot: -5deg;
+  transform: rotate(var(--rot));
+}
+
+@media (min-width: 100rem) {
+  .figSwap {
+    left: 11%;
+  }
+  .figPhone {
+    right: 12%;
+  }
+  .figCross {
+    left: 23%;
+  }
+}
+
+.glassCard {
+  position: absolute;
+  width: 12rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--glass-edge);
+  box-shadow: 0 1.25rem 2.5rem -1.5rem rgb(var(--shadow-rgb) / 0.4), 0 2px 10px rgb(var(--shadow-rgb) / 0.08);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.375rem;
+}
+
+.cardAvatar {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.6875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.cardIcon {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.cardStars {
+  color: var(--accent);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+}
+
+.cardBody {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.cardBody em {
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.cardMeta {
+  margin-top: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--ink-4);
+}
+
+.cardReview {
+  top: 36%;
+  left: 6%;
+  width: 12.5rem;
+  --rot: -2deg;
+  transform: rotate(var(--rot));
+}
+
+.cardFeed {
+  top: 33%;
+  right: 5%;
+  width: 12rem;
+  --rot: 2deg;
+  transform: rotate(var(--rot));
+}
+
+.cardSwap {
+  top: 76%;
+  left: 10%;
+  width: 12rem;
+  --rot: -2deg;
+  transform: rotate(var(--rot));
+}
+
+.cardMessage {
+  top: 56%;
+  right: 8%;
+  width: 12.5rem;
+  --rot: 3deg;
+  transform: rotate(var(--rot));
+}
+
+@media (min-width: 100rem) {
+  .cardReview {
+    left: 8%;
+  }
+  .cardFeed {
+    right: 7.5%;
+  }
+  .cardSwap {
+    left: 12%;
+  }
+  .cardMessage {
+    right: 12%;
+  }
+}
+
+/* ---------- entrance choreography ---------- */
+
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  .highlightMark {
+    transform: scaleX(0);
+    animation: markSwipe 0.55s cubic-bezier(0.65, 0, 0.35, 1) 1s both;
+  }
+
+  .mark {
+    opacity: 0;
+    animation: markFade 1.2s ease-out both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  .note.reveal,
+.orbitFigure.reveal,
+.glassCard.reveal {
+    animation-name: riseRotate;
+  }
+
+  .glow {
+    opacity: 0;
+    animation: fadeScaleGlow 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeScaleGlow {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
+@keyframes markSwipe {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes markFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--op);
+  }
+}
+
+@keyframes riseRotate {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) rotate(var(--rot, 0deg));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+}

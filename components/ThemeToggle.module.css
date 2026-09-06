@@ -1,0 +1,115 @@
+/* Même géométrie que LanguageToggle : les deux contrôles de l'en-tête doivent
+   se lire comme un seul système. */
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  padding: 0.1875rem;
+  gap: 0.125rem;
+}
+
+.option {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 1.625rem;
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.thumb {
+  position: absolute;
+  top: 0.1875rem;
+  bottom: 0.1875rem;
+  left: 0.1875rem;
+  width: calc(50% - 0.1875rem);
+  border-radius: 999px;
+  background: var(--ink);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   État du contrôle. Trois cas, tous en CSS pur pour qu'aucun rendu React ne
+   soit nécessaire avant l'affichage :
+
+     A. rien sur <html>  et OS clair   → clair actif   (règles de base)
+     B. [data-theme="dark"]            → sombre actif
+     C. OS sombre  et pas de choix explicite « clair » → sombre actif
+
+   B et C ont la même spécificité et arrivent après A ; la plus tardive qui
+   matche l'emporte, ce qui donne exactement la précédence voulue.
+   ------------------------------------------------------------------------ */
+
+/* A — clair actif */
+.toggle .light {
+  color: var(--paper);
+}
+.toggle .dark {
+  color: var(--ink-4);
+}
+.toggle .dark:hover {
+  color: var(--ink);
+}
+
+/* B — choix explicite « sombre » */
+:global(html[data-theme="dark"]) .toggle .thumb {
+  transform: translateX(100%);
+}
+:global(html[data-theme="dark"]) .toggle .light {
+  color: var(--ink-4);
+}
+:global(html[data-theme="dark"]) .toggle .light:hover {
+  color: var(--ink);
+}
+:global(html[data-theme="dark"]) .toggle .dark {
+  color: var(--paper);
+}
+
+/* C — préférence système, aucun choix contraire enregistré */
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-theme="light"])) .toggle .thumb {
+    transform: translateX(100%);
+  }
+  :global(html:not([data-theme="light"])) .toggle .light {
+    color: var(--ink-4);
+  }
+  :global(html:not([data-theme="light"])) .toggle .light:hover {
+    color: var(--ink);
+  }
+  :global(html:not([data-theme="light"])) .toggle .dark {
+    color: var(--paper);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: none;
+  }
+}

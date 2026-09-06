@@ -1,0 +1,719 @@
+/* ================= hero ================= */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--paper);
+  padding-bottom: clamp(4rem, 8vw, 5.5rem);
+}
+
+.washTop {
+  position: absolute;
+  top: -24%;
+  right: -14%;
+  z-index: 0;
+  pointer-events: none;
+  width: 36%;
+  padding-bottom: 36%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
+  opacity: calc(0.32 * var(--glow-strength));
+}
+
+.washBottom {
+  position: absolute;
+  bottom: 2%;
+  left: -14%;
+  z-index: 0;
+  pointer-events: none;
+  width: 28%;
+  padding-bottom: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
+  opacity: calc(0.7 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.045 * var(--grain-strength));
+}
+
+.markHedera {
+  position: absolute;
+  top: -4rem;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  font-size: clamp(14rem, 26vw, 23rem);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.08;
+  user-select: none;
+}
+
+/* ---------- hero content ---------- */
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 4.5rem) 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.875rem;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.375rem, 3.2vw + 1.3rem, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.subhead {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.35vw + 0.95rem, 1.0625rem);
+  line-height: 1.6;
+  color: var(--ink-4);
+  max-width: 30rem;
+  margin: 1.125rem 0 0;
+}
+
+.heroNote {
+  margin: clamp(1.75rem, 4vw, 2.25rem) 0 0;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--accent-strong);
+  background: var(--lilac);
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  padding: 0.5rem 1rem;
+  transform: rotate(-2deg);
+}
+
+/* ================= mission ================= */
+
+.mission {
+  position: relative;
+  background: var(--paper);
+  padding: clamp(4.5rem, 8vw, 6.5rem) 1.5rem;
+}
+
+.missionInner {
+  max-width: 62rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(3rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.missionText {
+  min-width: 0;
+}
+
+.dropcapGraf {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.375rem, 1.1vw + 1.1rem, 1.75rem);
+  line-height: 1.5;
+  letter-spacing: -0.003em;
+  color: var(--ink);
+  margin: 0.5rem 0 0;
+}
+
+.dropcap {
+  float: left;
+  font-size: 4.25em;
+  line-height: 0.82;
+  font-weight: 500;
+  padding: 0.04em 0.06em 0 0;
+  color: var(--accent-strong);
+}
+
+.emph {
+  font-style: italic;
+  color: var(--accent-strong);
+}
+
+.missionPhoto {
+  position: relative;
+  margin: 0;
+  justify-self: center;
+  width: clamp(11rem, 22vw, 15rem);
+  transform: rotate(-4deg);
+}
+
+.missionPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  border: 0.5rem solid var(--paper);
+  box-shadow: 0 1.5rem 2.5rem -1.25rem rgb(var(--shadow-rgb) / 0.35);
+  background: var(--lilac);
+}
+
+.pinDot {
+  position: absolute;
+  top: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffb4a8, var(--brand-violet-deep) 78%);
+  box-shadow: 0 0.25rem 0.5rem -0.15rem rgb(var(--shadow-rgb) / 0.45);
+  z-index: 2;
+}
+
+.missionCaption {
+  margin: 0.875rem 0 0;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink-4);
+}
+
+@media (max-width: 44rem) {
+  .missionInner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dropcapGraf {
+    text-align: left;
+  }
+
+  .missionPhoto {
+    order: -1;
+    margin: 0 auto;
+  }
+}
+
+/* ================= values ================= */
+
+.values {
+  position: relative;
+  background: var(--lilac);
+  padding: clamp(4.5rem, 8vw, 6.5rem) 1.5rem;
+}
+
+.valuesInner {
+  max-width: 62rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.valuesHeadline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.875rem, 1.8vw + 1.4rem, 2.625rem);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.rail {
+  height: 1px;
+  max-width: 30rem;
+  margin: clamp(2.25rem, 4vw, 3rem) auto 0;
+  background: var(--line-2);
+}
+
+.valueList {
+  list-style: none;
+  margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.valueCard {
+  position: relative;
+  background: var(--surface);
+  border-radius: 0 1.25rem 1.25rem 1.25rem;
+  padding: 2rem 1.5rem 1.75rem;
+  box-shadow: 0 1.5rem 2.5rem -1.75rem rgb(var(--shadow-rgb) / 0.28);
+}
+
+.valueRibbon {
+  position: absolute;
+  top: -0.125rem;
+  left: 1.5rem;
+  width: 0.75rem;
+  height: 1.75rem;
+  background: linear-gradient(180deg, var(--brand-violet) 0%, var(--brand-plum) 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+}
+
+.valueIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  color: var(--accent);
+  margin-bottom: 1.125rem;
+}
+
+.valueTitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+}
+
+.valueDesc {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.58;
+  color: var(--ink-4);
+  margin: 0;
+}
+
+@media (max-width: 52rem) {
+  .valueList {
+    grid-template-columns: 1fr;
+    max-width: 26rem;
+    margin-inline: auto;
+  }
+}
+
+/* ================= team / colophon ================= */
+
+.team {
+  position: relative;
+  background: var(--paper);
+  padding: clamp(4.5rem, 8vw, 6.5rem) 1.5rem;
+}
+
+.teamInner {
+  max-width: 38rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.teamHeadline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.875rem, 1.8vw + 1.4rem, 2.625rem);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.teamBody {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+  max-width: 32rem;
+  margin: 1.125rem auto 0;
+}
+
+.colophon {
+  position: relative;
+  margin: clamp(2.75rem, 5vw, 3.5rem) auto 0;
+  max-width: 26rem;
+  border: 1.5px solid var(--line-2);
+  border-radius: 0.25rem;
+  padding: clamp(2rem, 4vw, 2.5rem) clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.colophon::before {
+  content: "";
+  position: absolute;
+  inset: 0.375rem;
+  border: 1px solid var(--line);
+  border-radius: 0.125rem;
+  pointer-events: none;
+}
+
+.colophonMark {
+  display: block;
+  font-size: 1.25rem;
+  color: var(--accent);
+  opacity: 0.6;
+}
+
+.colophonMark:first-child {
+  margin-bottom: 1rem;
+}
+
+.colophonMark:last-child {
+  margin-top: 1.125rem;
+}
+
+.colophonList {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.colophonRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+.colophonRow dt {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.colophonRow dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-style: italic;
+  font-family: var(--font-display);
+  color: var(--ink);
+}
+
+/* ================= cta ================= */
+
+.cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--lilac);
+  padding: clamp(4.5rem, 8vw, 6.5rem) 1.5rem;
+}
+
+.washCta {
+  position: absolute;
+  top: -12%;
+  right: -8%;
+  z-index: 0;
+  pointer-events: none;
+  width: 30rem;
+  padding-bottom: 30rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, var(--glow) 0%, transparent 66%);
+  opacity: calc(0.28 * var(--glow-strength));
+}
+
+.ctaInner {
+  position: relative;
+  z-index: 1;
+  max-width: 62rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2.5rem, 6vw, 4rem);
+  align-items: center;
+}
+
+.ctaText {
+  min-width: 0;
+}
+
+.ctaHeadline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 2.2vw + 1.3rem, 2.875rem);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0.5rem 0 0;
+}
+
+.ctaSubhead {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  max-width: 26rem;
+  margin: 1rem 0 0;
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+.btnPrimary,
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.875rem 1.625rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+/* Aplat encre, pas aplat violet : le texte suit le thème (pastille claire à
+   texte foncé en sombre). Au survol le fond passe en violet, il faut alors
+   repasser le texte en clair. */
+.btnPrimary {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1.5px solid var(--ink);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-fill-hover);
+  border-color: var(--accent-fill-hover);
+  color: var(--on-accent);
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--fill-soft);
+}
+
+.btnSecondary:hover {
+  border-color: var(--accent-strong);
+  color: var(--accent-strong);
+}
+
+.btnPrimary:focus-visible,
+.btnSecondary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- phone mock ---------- */
+
+.phoneStage {
+  display: flex;
+  justify-content: center;
+}
+
+/* Châssis : un objet, comme celui de `Phone.module.css`. Il ne bascule pas,
+   sinon le téléphone deviendrait blanc en mode sombre. Seul l'écran suit le
+   thème, puisqu'il montre l'application. */
+.phoneFrame {
+  position: relative;
+  width: clamp(13.5rem, 24vw, 16rem);
+  aspect-ratio: 9 / 18.5;
+  border-radius: 2.25rem;
+  background: var(--brand-ink);
+  box-shadow:
+    0 2rem 3.5rem -1.75rem rgb(var(--shadow-rgb) / 0.45),
+    inset 0 0 0 1px var(--object-edge);
+  padding: 0.5rem;
+}
+
+.phoneNotch {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34%;
+  height: 1.125rem;
+  background: var(--brand-ink);
+  border-radius: 0 0 0.875rem 0.875rem;
+  z-index: 2;
+}
+
+.phoneScreen {
+  position: relative;
+  height: 100%;
+  border-radius: 1.75rem;
+  background: var(--paper);
+  overflow: hidden;
+  padding: 1.5rem 0.875rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.phoneHome {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28%;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--fill-soft);
+}
+
+.explorerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.explorerTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+
+.explorerSearch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  color: var(--accent-strong);
+}
+
+.explorerLabel {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.explorerGrid {
+  margin-top: 0.625rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+  flex: 1;
+}
+
+.explorerCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+}
+
+.explorerCover {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0 0 1px rgb(var(--shadow-rgb) / 0.06);
+}
+
+.coverviolet {
+  background: linear-gradient(155deg, var(--brand-violet) 0%, var(--brand-violet-deep) 100%);
+}
+
+.coverplum {
+  background: linear-gradient(155deg, var(--brand-plum) 0%, var(--brand-night) 100%);
+}
+
+.coverglow {
+  background: linear-gradient(155deg, var(--brand-glow) 0%, var(--brand-violet) 100%);
+}
+
+.coverink {
+  background: linear-gradient(155deg, #3a2a4d 0%, var(--brand-ink) 100%);
+}
+
+/* Posée sur une couverture : elle appartient à l'objet, pas à la page. */
+.explorerTag {
+  position: absolute;
+  top: 0.3125rem;
+  left: 0.3125rem;
+  background: var(--brand-cream);
+  color: var(--brand-violet-deep);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.5rem;
+  letter-spacing: 0.02em;
+  padding: 0.1875rem 0.375rem;
+  border-radius: 999px;
+}
+
+.explorerBookTitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.625rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.explorerBookAuthor {
+  font-family: var(--font-body);
+  font-size: 0.5625rem;
+  color: var(--ink-4);
+}
+
+@media (max-width: 46rem) {
+  .ctaInner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .ctaText {
+    order: 1;
+  }
+
+  .ctaSubhead {
+    margin-inline: auto;
+  }
+
+  .ctaActions {
+    justify-content: center;
+  }
+
+  .phoneStage {
+    order: 0;
+  }
+}
+
+/* ================= small screens ================= */
+
+@media (max-width: 30rem) {
+  .headline {
+    font-size: clamp(2rem, 8vw + 0.6rem, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .valueCard,
+.missionPhoto,
+.colophon {
+    transition: none;
+  }
+}

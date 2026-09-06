@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   LinQfolio — système de couleurs
+   ----------------------------------------------------------------------------
+   Deux couches :
+
+   1. `--brand-*`  constantes de marque. Elles ne changent JAMAIS de thème.
+      Ce sont des objets : couvertures de livres, écran de téléphone, bandeau
+      de nuit du CTA. Un livre violet reste violet quand on éteint la lumière.
+
+   2. tokens sémantiques (`--paper`, `--ink`, `--accent`…). Ils basculent.
+      Chaque valeur de texte est vérifiée en contraste WCAG AA (4.5:1 texte
+      courant, 3:1 bordures de contrôle) sur ses fonds réels — papier, carte
+      et lilas — dans les deux thèmes.
+
+   Le thème sombre n'est pas une inversion : c'est la lecture du soir. Fond
+   prune-noir plutôt que gris neutre, blanc cassé tiède plutôt que blanc pur
+   (moins de halo sur les longs textes), violet remonté en lavande de lampe.
+   ========================================================================= */
+
+:root {
+  /* ---- marque, invariante ---- */
+  --brand-cream: #fffefc;
+  --brand-ink: #1c1024;
+  --brand-violet: #6a3df0;
+  --brand-violet-deep: #4c1fce;
+  --brand-plum: #2c0f5c;
+  --brand-night: #170733;
+  --brand-glow: #cba9ff;
+  --brand-gold: #e2b04a;
+  --brand-gold-light: #f0c977;
+  /* Le signet du bandeau de fin : le ruban de soie d'un relié, chaud contre
+     le violet là où le lilas s'y fondait. */
+  --brand-rose: #f4859f;
+  --brand-rose-light: #ffc3d3;
+
+  /* ---- thème clair ---- */
+  color-scheme: light;
+
+  /* surfaces */
+  --paper: #fffefc; /* fond de page */
+  --surface: #ffffff; /* carte posée sur la page */
+  --lilac: #f2ecfb; /* surface teintée : puces, pastilles, encarts */
+
+  /* Texte — ratios mesurés sur --paper puis --lilac.
+     L'échelle vise le confort de lecture, pas le minimum AA : --ink-3 porte le
+     gros du texte courant, il reste donc proche du noir plutôt que de tomber
+     au plancher réglementaire. */
+  --ink: #1c1024; /* 18.1 · 15.8 — titres */
+  --ink-2: #372d3e; /* 13.0 · 11.3 — texte fort, chapeaux */
+  --ink-3: #49404f; /*  9.8 ·  8.5 — texte courant secondaire */
+  --ink-4: #5c5360; /*  7.3 ·  6.3 — méta, labels, placeholders */
+
+  /* traits et remplissages neutres */
+  --line: color-mix(in srgb, var(--ink) 10%, transparent);
+  --line-2: color-mix(in srgb, var(--ink) 16%, transparent);
+  --line-3: color-mix(in srgb, var(--ink) 48%, transparent); /* 3.3:1 */
+  /* Bord des contrôles dont le trait EST la seule frontière (champs, boutons
+     fantômes). WCAG 1.4.11 demande 3:1 ici. Les pastilles segmentées gardent
+     `--line-2` : leur curseur interne, à 15:1, suffit à les identifier. */
+  --control-line: var(--line-3);
+  --fill-soft: color-mix(in srgb, var(--ink) 22%, transparent);
+  --wash: color-mix(in srgb, var(--ink) 6%, transparent);
+
+  /* accent */
+  --accent: #6a3df0; /* 5.9:1 papier · 5.1:1 lilas — texte d'accent */
+  --accent-strong: #4c1fce; /* 8.7:1 — accent appuyé, survol de lien */
+  --accent-fill: #6a3df0; /* aplat violet */
+  --accent-fill-hover: #4c1fce;
+  --on-accent: #fffefc; /* 5.9:1 sur l'aplat — texte posé dessus */
+  --accent-line: color-mix(in srgb, var(--accent) 45%, transparent);
+  --accent-wash: color-mix(in srgb, var(--accent) 14%, transparent);
+  --focus: #4c1fce;
+
+  /* atmosphère */
+  --glow: #cba9ff;
+  /* Fin de dégradé : même teinte, alpha nul. Un `transparent` nu vire au gris
+     dans certains moteurs, d'où la valeur explicite. */
+  --glow-fade: rgb(203 169 255 / 0);
+  --lilac-fade: rgb(242 236 251 / 0);
+  --glow-strength: 1; /* multiplicateur d'opacité des halos */
+  --grain-strength: 1; /* idem pour le grain de papier */
+  --shadow-rgb: 9 3 20;
+  /* Le surligneur du hero. En clair : un feutre pâle en `multiply` sur la
+     crème. En sombre : `multiply` disparaîtrait, et un feutre pâle derrière un
+     texte clair tomberait à 2.4:1 — c'est donc un bloc violet profond, plus
+     clair que la page mais bien plus sombre que le texte (9.7:1). */
+  --highlight: var(--glow);
+  --highlight-blend: multiply;
+  /* Le logotype est un aplat monochrome : on le repeint plutôt que de charger
+     un second fichier. */
+  --logo-filter: none;
+  /* Liseré des cartes en verre dépoli : un reflet blanc en clair, un simple
+     filet en sombre — 75 % de blanc y ferait un cadre criard. */
+  --glass-edge: rgb(255 255 255 / 0.75);
+  /* Arête des objets sombres (couvertures, châssis) : sur page sombre ils
+     n'ont plus de contour, il faut le dessiner. */
+  --object-edge: rgb(255 255 255 / 0.08);
+  --object-edge-strong: rgb(255 255 255 / 0.12);
+
+  --font-body-stack: var(--font-plex), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Thème sombre, choix explicite.
+   ⚠ Le bloc est repris à l'identique plus bas sous `prefers-color-scheme`, qui
+   couvre le mode « système » — l'état par défaut tant que personne n'a touché
+   au sélecteur. CSS n'ayant pas de mixin, les deux doivent rester synchrones :
+   toute valeur modifiée ici doit l'être là aussi. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #16111f;
+  --surface: #1e1829;
+  --lilac: #262036;
+
+  --ink: #ece6f3; /* 15.1 · 12.8 — blanc cassé tiède, pas de blanc pur */
+  --ink-2: #d2ccda; /* 11.8 · 10.0 */
+  --ink-3: #c1bbc9; /*  9.9 ·  8.4 */
+  --ink-4: #a8a2af; /*  7.5 ·  6.3 */
+
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --line-2: color-mix(in srgb, var(--ink) 22%, transparent);
+  --line-3: color-mix(in srgb, var(--ink) 48%, transparent); /* 4.3:1 */
+  --fill-soft: color-mix(in srgb, var(--ink) 26%, transparent);
+  /* Réglure du hero et filet de la timeline. À poids égal, un trait clair
+     sur fond sombre se voit bien plus qu'un trait sombre sur crème : 8 %
+     dessinerait un papier quadrillé. */
+  --wash: color-mix(in srgb, var(--ink) 4%, transparent);
+
+  --accent: #b79aff; /* 8.0:1 papier · 6.8:1 lilas */
+  --accent-strong: #cdb8ff; /* 10.5:1 */
+  --accent-fill: #6d3ff2; /* 5.7:1 avec --on-accent */
+  --accent-fill-hover: #7b4bff; /* 4.9:1 */
+  --on-accent: #fffefc;
+  --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+  --accent-wash: color-mix(in srgb, var(--accent) 16%, transparent);
+  --focus: #cdb8ff;
+
+  --glow: #a97dff;
+  --glow-fade: rgb(169 125 255 / 0);
+  --lilac-fade: rgb(38 32 54 / 0);
+  --glow-strength: 0.55; /* les halos écrasent vite un fond sombre */
+  --grain-strength: 1;
+  --shadow-rgb: 0 0 0;
+  --highlight: #3d2b6b;
+  --highlight-blend: normal;
+  --logo-filter: brightness(0) invert(1) brightness(0.93);
+  --glass-edge: rgb(255 255 255 / 0.1);
+  --object-edge: rgb(255 255 255 / 0.18);
+  --object-edge-strong: rgb(255 255 255 / 0.26);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --paper: #16111f;
+    --surface: #1e1829;
+    --lilac: #262036;
+
+    --ink: #ece6f3;
+    --ink-2: #d2ccda;
+    --ink-3: #c1bbc9;
+    --ink-4: #a8a2af;
+
+    --line: color-mix(in srgb, var(--ink) 14%, transparent);
+    --line-2: color-mix(in srgb, var(--ink) 22%, transparent);
+    --line-3: color-mix(in srgb, var(--ink) 48%, transparent);
+    --fill-soft: color-mix(in srgb, var(--ink) 26%, transparent);
+    /* Réglure du hero et filet de la timeline. À poids égal, un trait clair
+     sur fond sombre se voit bien plus qu'un trait sombre sur crème : 8 %
+     dessinerait un papier quadrillé. */
+  --wash: color-mix(in srgb, var(--ink) 4%, transparent);
+
+    --accent: #b79aff;
+    --accent-strong: #cdb8ff;
+    --accent-fill: #6d3ff2;
+    --accent-fill-hover: #7b4bff;
+    --on-accent: #fffefc;
+    --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+    --accent-wash: color-mix(in srgb, var(--accent) 16%, transparent);
+    --focus: #cdb8ff;
+
+    --glow: #a97dff;
+    --glow-fade: rgb(169 125 255 / 0);
+    --lilac-fade: rgb(38 32 54 / 0);
+    --glow-strength: 0.55;
+    --grain-strength: 1;
+    --shadow-rgb: 0 0 0;
+    --highlight: #3d2b6b;
+    --highlight-blend: normal;
+      --logo-filter: brightness(0) invert(1) brightness(0.93);
+    --glass-edge: rgb(255 255 255 / 0.1);
+    --object-edge: rgb(255 255 255 / 0.18);
+    --object-edge-strong: rgb(255 255 255 / 0.26);
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-lilac: var(--lilac);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-glow: var(--glow);
+  --font-display: var(--font-newsreader);
+  --font-body: var(--font-plex);
+  --font-hand: var(--font-caveat);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body-stack);
+}
+
+/* Sélection lisible dans les deux thèmes. */
+::selection {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+
+/* Filet de sécurité : tout élément focusable garde un anneau visible même si
+   un composant oublie sa propre règle. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Contrôles natifs (cases, curseurs, sélection de texte des champs). */
+:root {
+  accent-color: var(--accent-fill);
+}
+
+/* Le basculement de thème. Aucune transition en régime permanent — elle
+   coûterait un repaint à chaque survol. L'attribut n'est posé que le temps
+   du fondu, puis retiré. */
+:root[data-theme-switching] * {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    fill 180ms ease,
+    stroke 180ms ease !important;
+  transition-delay: 0ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme-switching] * {
+    transition: none !important;
+  }
+}
+
+/* Préférence de contraste renforcé : on durcit les traits porteurs de sens. */
+@media (prefers-contrast: more) {
+  /* `:root:root` pour repasser devant les blocs de thème, qui sont plus
+     spécifiques que `:root` seul. */
+  :root:root {
+    --ink-3: var(--ink-2);
+    --ink-4: var(--ink-2);
+    --line: color-mix(in srgb, var(--ink) 28%, transparent);
+    --line-2: color-mix(in srgb, var(--ink) 40%, transparent);
+    --line-3: color-mix(in srgb, var(--ink) 70%, transparent);
+  }
+}
+
+/* Liens semés dans les textes légaux (emails, CNIL, plateforme ODR,
+   hébergeur). Ils vivent au fil du paragraphe : soulignés pour rester
+   repérables sans couleur, teintés pour se distinguer de la prose. */
+.legalLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--accent-line);
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.legalLink:hover {
+  color: var(--accent-strong);
+  text-decoration-color: currentColor;
+}
+
+.legalLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

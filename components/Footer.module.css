@@ -1,0 +1,537 @@
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  padding: clamp(3.5rem, 6vw, 5rem) 1.5rem clamp(2rem, 4vw, 2.5rem);
+}
+
+.wash {
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  z-index: 0;
+  pointer-events: none;
+  width: 34rem;
+  padding-bottom: 34rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--lilac) 0%, transparent 68%);
+  opacity: calc(0.7 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.04 * var(--grain-strength));
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+/* ---------- top: brand + newsletter ---------- */
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brandMark {
+  height: 2rem;
+  width: auto;
+  /* Le logotype est un aplat monochrome : `--logo-filter` le repeint en clair
+     sur fond sombre plutôt que de charger un second fichier. */
+  filter: var(--logo-filter);
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  margin: 0.875rem 0 0;
+  max-width: 18rem;
+}
+
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.75rem;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.375rem, 1.4vw + 1rem, 1.75rem);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+  max-width: 24rem;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 1.375rem 0 0;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  border: 1.5px solid var(--control-line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.125rem;
+}
+
+.input::placeholder {
+  color: var(--ink-4);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+.seal {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(155deg, var(--accent-fill) 0%, var(--accent-fill-hover) 100%);
+  color: var(--on-accent);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.seal:hover {
+  transform: scale(1.06);
+}
+
+.seal:active {
+  transform: scale(0.96) rotate(-4deg);
+}
+
+.seal:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Pendant l'envoi et le cachet, le bouton ne répond plus au survol : la
+   séquence d'animation doit rester lisible. */
+.seal:disabled {
+  cursor: progress;
+}
+
+.seal:disabled:hover,
+.seal:disabled:active {
+  transform: none;
+}
+
+/* ---------- le cachet : boucle d'attente, tampon, refus ---------- */
+
+/* Les deux glyphes occupent la même case de grille pour se croiser sans
+   déplacer le bouton. */
+.sealFace {
+  display: grid;
+  place-items: center;
+}
+
+.sealGlyph {
+  grid-area: 1 / 1;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sealCheck {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.sealCheck path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* Anneau : arc rotatif à l'envoi, onde de pression au succès. */
+.sealRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.seal[data-state="pending"] .sealBookmark {
+  opacity: 0.35;
+  transform: scale(0.82);
+}
+
+.seal[data-state="pending"] .sealRing {
+  opacity: 1;
+  border-top-color: var(--on-accent);
+  border-right-color: color-mix(in srgb, var(--on-accent) 35%, transparent);
+  animation: sealSpin 0.7s linear infinite;
+}
+
+.seal[data-state="stamped"] {
+  animation: sealPress 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.seal[data-state="stamped"] .sealBookmark {
+  opacity: 0;
+  transform: scale(0.5) rotate(-12deg);
+}
+
+.seal[data-state="stamped"] .sealCheck {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 0.12s;
+}
+
+.seal[data-state="stamped"] .sealCheck path {
+  animation: sealDraw 0.34s 0.16s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.seal[data-state="stamped"] .sealRing {
+  border-color: var(--accent);
+  animation: sealPulse 0.6s 0.1s ease-out forwards;
+}
+
+.seal[data-state="error"] {
+  animation: sealShake 0.4s ease-out;
+}
+
+@keyframes sealSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sealPress {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.84);
+  }
+  70% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sealPulse {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes sealDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes sealShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  22% {
+    transform: translateX(-4px);
+  }
+  46% {
+    transform: translateX(4px);
+  }
+  70% {
+    transform: translateX(-3px);
+  }
+  88% {
+    transform: translateX(2px);
+  }
+}
+
+.success {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.375rem 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  animation: successIn 0.35s ease-out both;
+}
+
+.successMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 0.75rem;
+}
+
+@keyframes successIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error {
+  margin: 0.625rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 22rem;
+}
+
+.microcopy {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+  margin: 0.75rem 0 0;
+  max-width: 22rem;
+}
+
+/* ---------- rule + links ---------- */
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  margin: clamp(2.5rem, 5vw, 3.25rem) 0;
+}
+
+.linksRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2.5rem 3rem;
+}
+
+.linkColumns {
+  display: flex;
+  gap: clamp(3rem, 6vw, 5rem);
+  flex-wrap: wrap;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.socialGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+@media (min-width: 40rem) {
+  .socialGroup {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.linkGroupTitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 0.25rem;
+}
+
+.linkGroup a {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--ink-3);
+  text-decoration: none;
+  width: fit-content;
+}
+
+.linkGroup a:hover {
+  color: var(--ink);
+}
+
+.linkGroup a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* ---------- bottom bar ---------- */
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--ink-4);
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  color: var(--accent-strong);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.socialLink:hover {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  transform: translateY(-2px);
+}
+
+.socialLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 42rem) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .headline,
+  .tagline,
+  .microcopy {
+    max-width: none;
+  }
+
+  .form {
+    max-width: none;
+  }
+
+  .linksRow {
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 26rem) {
+  .form {
+    flex-wrap: wrap;
+  }
+
+  .input {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal,
+  .seal[data-state="stamped"],
+  .seal[data-state="error"],
+  .sealRing,
+  .sealGlyph,
+  .sealCheck path,
+  .success {
+    animation: none;
+    transition: none;
+  }
+
+  /* Sans animation de tracé, la coche doit être dessinée d'emblée. */
+  .seal[data-state="stamped"] .sealCheck path {
+    stroke-dashoffset: 0;
+  }
+}

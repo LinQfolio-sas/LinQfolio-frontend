@@ -1,0 +1,104 @@
+.nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brandMark {
+  height: clamp(1.75rem, 1.2rem + 1vw, 2.375rem);
+  width: auto;
+  flex: none;
+  /* Le logotype est un aplat monochrome : `--logo-filter` le repeint en clair
+     sur fond sombre plutôt que de charger un second fichier. */
+  filter: var(--logo-filter);
+}
+
+.links {
+  display: none;
+  align-items: center;
+  gap: 2.25rem;
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--ink-3);
+}
+
+.links a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.links a:hover {
+  color: var(--ink);
+}
+
+.current {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (min-width: 720px) {
+  .links {
+    display: flex;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+/* `.right .themeToggle` pour passer devant le `display: inline-flex` que le
+   composant se donne dans son propre module. */
+.right .themeToggle {
+  display: none;
+}
+
+@media (min-width: 560px) {
+  .right .themeToggle {
+    display: inline-flex;
+  }
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.625rem 1.375rem;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+/* En sombre la pastille est claire avec un texte foncé ; au survol elle passe
+   en violet, il faut donc repasser le texte en clair. */
+.cta:hover {
+  background: var(--accent-fill-hover);
+  color: var(--on-accent);
+}
+
+.brand:focus-visible,
+.cta:focus-visible,
+.links a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

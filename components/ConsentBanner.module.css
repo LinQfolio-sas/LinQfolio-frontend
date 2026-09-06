@@ -1,0 +1,148 @@
+.banner {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(44rem, calc(100vw - 2rem));
+  animation: rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "text actions"
+    "more actions";
+  align-items: center;
+  column-gap: 1.5rem;
+  row-gap: 0.375rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  box-shadow: 0 1.5rem 3rem -1rem rgb(var(--shadow-rgb) / 0.28);
+}
+
+.text {
+  grid-area: text;
+}
+
+.title {
+  font-family: var(--font-body-stack);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.25rem;
+}
+
+.body {
+  font-family: var(--font-body-stack);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Base commune aux deux réponses : même surface cliquable, même graisse.
+   Seul le remplissage change. */
+.accept,
+.decline {
+  flex: none;
+  min-width: 6.5rem;
+  padding: 0.625rem 1.125rem;
+  border-radius: 999px;
+  font-family: var(--font-body-stack);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.accept {
+  border: 1px solid var(--accent-fill);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+.accept:hover {
+  background: var(--accent-fill-hover);
+  border-color: var(--accent-fill-hover);
+}
+
+.decline {
+  border: 1px solid var(--accent-line);
+  background: transparent;
+  color: var(--accent);
+}
+
+.decline:hover {
+  background: var(--accent-wash);
+}
+
+.accept:focus-visible,
+.decline:focus-visible,
+.more:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.more {
+  grid-area: more;
+  justify-self: start;
+  font-family: var(--font-body-stack);
+  font-size: 0.75rem;
+  color: var(--ink-4);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.more:hover {
+  color: var(--ink-2);
+}
+
+@media (max-width: 40rem) {
+  .card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "text"
+      "actions"
+      "more";
+    row-gap: 0.875rem;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .accept,
+  .decline {
+    min-width: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+  }
+}
