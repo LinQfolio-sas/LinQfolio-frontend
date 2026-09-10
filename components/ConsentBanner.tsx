@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { useConsent } from "@/lib/analytics/ConsentContext";
 import { ANALYTICS_ENABLED } from "@/lib/analytics/config";
 import { sendAudience } from "@/lib/audience/beacon";
-import { useT } from "@/lib/i18n/LanguageContext";
+import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
+import { href } from "@/lib/seo";
 import styles from "./ConsentBanner.module.css";
 
 const COPY = {
@@ -43,6 +44,7 @@ const COPY = {
 
 export default function ConsentBanner() {
   const { choice, resolved, decide } = useConsent();
+  const { lang } = useLanguage();
   const t = useT(COPY);
   const counted = useRef(false);
 
@@ -92,7 +94,7 @@ export default function ConsentBanner() {
           </button>
         </div>
 
-        <a className={styles.more} href="/cookies">
+        <a className={styles.more} href={href("cookies", lang)}>
           {t.more}
         </a>
       </div>

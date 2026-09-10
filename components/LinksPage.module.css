@@ -1,0 +1,504 @@
+/* ============================================================================
+   Page de liens — /liens
+   ----------------------------------------------------------------------------
+   Les réglages en tête, puis trois blocs dans l'ordre où on en a besoin : la
+   marque, l'application, le sommaire. Rien d'autre : la personne arrive d'une
+   bio de profil, sur un téléphone, et repart ailleurs en un geste.
+
+   Les sélecteurs restent à une seule classe, y compris dans les media queries,
+   qui sont regroupées en fin de fichier. Une règle de largeur écrase donc la
+   règle de base par l'ordre, jamais par la spécificité.
+   ========================================================================= */
+
+.page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--paper);
+  padding: clamp(2.25rem, 7vw, 3.25rem) clamp(1rem, 5vw, 1.5rem)
+    clamp(2rem, 6vw, 3rem);
+}
+
+/* Un seul halo, derrière la plaque : la page est courte, deux en feraient un
+   décor. */
+.wash {
+  position: absolute;
+  top: -14%;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+  width: min(30rem, 120%);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, var(--glow) 0%, var(--glow-fade) 64%);
+  opacity: calc(0.26 * var(--glow-strength));
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
+  opacity: calc(0.04 * var(--grain-strength));
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 27rem;
+  margin: 0 auto;
+}
+
+/* ---------- barre de tête : langue et thème ----------
+   Deux réglages, pas deux actions : ils se rangent en haut à droite, plus
+   petits que partout ailleurs sur le site. Les sélecteurs d'élément suffisent
+   à les redimensionner — les classes des deux modules sont hachées, mais leurs
+   balises, elles, ne le sont pas. */
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
+  margin-bottom: clamp(0.75rem, 3vw, 1.125rem);
+}
+
+.topBar button {
+  min-width: 1.875rem;
+  height: 1.375rem;
+  padding: 0 0.4375rem;
+  font-size: 0.6875rem;
+}
+
+.topBar svg {
+  width: 0.8125rem;
+  height: 0.8125rem;
+}
+
+/* ---------- frontispice : la marque ---------- */
+
+.identity {
+  text-align: center;
+}
+
+.masthead {
+  margin: 0;
+}
+
+.logo {
+  display: block;
+  width: clamp(6.5rem, 30vw, 8rem);
+  height: auto;
+  margin: 0 auto;
+  /* Le logotype est un aplat monochrome : on le repeint pour le thème sombre
+     plutôt que de charger un second fichier. */
+  filter: var(--logo-filter);
+}
+
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.0625rem, 3.6vw, 1.1875rem);
+  line-height: 1.45;
+  color: var(--ink-2);
+  margin: 0.875rem auto 0;
+  max-width: 17rem;
+  text-wrap: balance;
+}
+
+/* ---------- l'ex-libris : la plaque gravée qui porte le code ---------- */
+
+.plate {
+  position: relative;
+  width: fit-content;
+  margin: clamp(1.5rem, 5vw, 1.875rem) auto 0;
+  padding: 0.9375rem;
+  background: var(--lilac);
+  border: 1px solid var(--line-2);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 24px -20px rgb(var(--shadow-rgb) / 0.45);
+}
+
+/* Le double filet des ex-libris gravés. C'est le seul endroit où le violet
+   devient un trait plutôt qu'un aplat. */
+.plate::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+/* Un lecteur de code attend des modules sombres sur fond clair. En thème
+   sombre, inverser ferait échouer une partie des appareils : la vignette garde
+   donc les couleurs de marque, et se lit comme un objet posé sur la page.
+   Le rembourrage EST la zone de silence du code — jamais moins de quatre
+   modules, soit 18 px pour un code de 33 modules affiché à 128 px. */
+.qrFrame {
+  display: block;
+  padding: 1.125rem;
+  border-radius: 0.375rem;
+  background: var(--brand-cream);
+  color: var(--brand-ink);
+}
+
+.qrImage {
+  display: block;
+  width: clamp(7rem, 30vw, 8rem);
+  height: auto;
+  margin-inline: auto;
+}
+
+/* ---------- l'application ---------- */
+
+.store {
+  margin-top: clamp(1.75rem, 6vw, 2.25rem);
+  text-align: center;
+}
+
+.storeLabel {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 0 0 0.75rem;
+}
+
+/* Les deux magasins pèsent le même poids : on ne sait pas sur quel appareil
+   la page s'ouvre, rien ne justifierait d'en désigner un principal. */
+.storeRow {
+  display: grid;
+  gap: 0.625rem;
+  max-width: 17rem;
+  margin-inline: auto;
+}
+
+.storeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+/* Le second magasin garde la même forme et le même poids : seul le fond
+   change. Sa paire de couleurs est celle de la marque, pas celle du thème —
+   comme la plaque du code, il reste clair de nuit comme de jour. */
+.storeButtonPlain {
+  background: var(--brand-cream);
+  color: var(--brand-ink);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.storeButton:active {
+  transform: scale(0.985);
+}
+
+/* ---------- le sommaire ---------- */
+
+.contents {
+  margin-top: clamp(2rem, 7vw, 2.5rem);
+}
+
+.group + .group {
+  margin-top: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.625rem;
+  margin-bottom: 0.25rem;
+}
+
+.groupLabel {
+  flex: none;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 0;
+}
+
+.groupRule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.75rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 160ms ease;
+}
+
+.rowIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 999px;
+  background: var(--lilac);
+  color: var(--accent-strong);
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.rowName {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Les points de conduite d'une table des matières : ils relient le nom à son
+   adresse, comme ceux d'un livre relient un titre à sa page. */
+.leader {
+  flex: 1 1 auto;
+  min-width: 0.75rem;
+  height: 5px;
+  transform: translateY(2px);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    var(--fill-soft) 1px,
+    transparent 1.6px
+  );
+  background-size: 6px 5px;
+  background-repeat: repeat-x;
+}
+
+.rowLocator {
+  flex: none;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+.row:active {
+  background: var(--lilac);
+}
+
+/* ---------- colophon ---------- */
+
+.colophon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: clamp(2rem, 7vw, 2.5rem);
+  padding-top: clamp(1.25rem, 4vw, 1.5rem);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.legal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--ink-4);
+}
+
+/* Le rembourrage vertical porte la cible du doigt à 40 px sans changer la
+   ligne de texte : les deux liens légaux sont les seuls de la page à ne pas
+   déjà tenir dans une rangée. */
+.legal a {
+  display: inline-block;
+  padding: 0.625rem 0.125rem;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+
+.copyright {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--ink-4);
+}
+
+/* ---------- survol : réservé aux pointeurs ----------
+   Sur un écran tactile, `:hover` reste collé après le contact et laisserait
+   une rangée allumée derrière soi. */
+
+@media (hover: hover) {
+  .storeButton:hover {
+    background: var(--accent-fill-hover);
+  }
+
+  .storeButtonPlain:hover {
+    background: color-mix(in srgb, var(--brand-ink) 7%, var(--brand-cream));
+  }
+
+  .row:hover {
+    background: var(--lilac);
+  }
+
+  .row:hover .rowIcon {
+    background: var(--accent-fill);
+    color: var(--on-accent);
+  }
+
+  .row:hover .rowLocator {
+    color: var(--ink-3);
+  }
+
+  .legal a:hover {
+    color: var(--ink);
+  }
+}
+
+/* ---------- largeurs ---------- */
+
+/* Passé le plus petit téléphone, le sommaire retrouve sa taille de lecture :
+   sous 368 px, « support@linqfolio.com » ne laisserait plus de place aux
+   points de conduite. */
+@media (min-width: 23rem) {
+  .row {
+    gap: 0.75rem;
+  }
+
+  .rowName {
+    font-size: 1.0625rem;
+  }
+
+  .rowLocator {
+    font-size: 0.75rem;
+  }
+}
+
+/* Au-delà, le code devient utile : on est sur un écran qu'une autre personne
+   peut scanner. Il grandit, et la colonne se dédouble pour qu'il reste en vue
+   pendant qu'on parcourt le sommaire. */
+@media (min-width: 62rem) {
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    column-gap: clamp(2.5rem, 6vw, 4rem);
+    row-gap: 1.75rem;
+    align-items: start;
+    max-width: 52rem;
+  }
+
+  .topBar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  .identity {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .store {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .contents {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    margin-top: 0.25rem;
+  }
+
+  .colophon {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .logo {
+    width: 9rem;
+  }
+
+  .qrFrame {
+    padding: 1.25rem;
+  }
+
+  .qrImage {
+    width: 9.5rem;
+  }
+
+  .storeRow {
+    max-width: none;
+  }
+}
+
+/* ---------- chorégraphie d'arrivée ----------
+   Une seule séquence, au chargement : la page se pose de haut en bas, comme on
+   découvre une page de garde. Rien au défilement — tout tient dans un écran ou
+   deux, et un second effet ferait redondance. */
+
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--delay, 0s);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -9,8 +9,9 @@
   background: var(--paper);
 }
 
-/* Les halos. Le hero n'a plus de vague floue : ce sont eux, et eux seuls, qui
-   portent le violet derrière le champ de marques. */
+/* Les cercles. Des aplats d'une seule teinte, `--glow`, sans dégradé : seule
+   l'opacité les distingue. Ce sont eux, et eux seuls, qui portent le violet
+   derrière le champ de marques. */
 .washTop {
   position: absolute;
   top: -20%;
@@ -20,8 +21,8 @@
   width: 40%;
   padding-bottom: 40%;
   border-radius: 50%;
-  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
-  opacity: calc(0.3 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.16 * var(--glow-strength));
 }
 
 .washMid {
@@ -33,8 +34,8 @@
   width: 30%;
   padding-bottom: 30%;
   border-radius: 50%;
-  background: radial-gradient(circle at 58% 46%, var(--glow) 0%, var(--glow-fade) 66%);
-  opacity: calc(0.24 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.12 * var(--glow-strength));
 }
 
 .washBottom {
@@ -46,8 +47,8 @@
   width: 36%;
   padding-bottom: 36%;
   border-radius: 50%;
-  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
-  opacity: calc(0.6 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.1 * var(--glow-strength));
 }
 
 /* ---------- le champ de marques ---------- */
@@ -321,238 +322,13 @@
   padding-bottom: 60%;
   border-radius: 50%;
   background: var(--glow);
-  filter: blur(48px);
-  opacity: 0.45;
+  opacity: calc(0.3 * var(--glow-strength));
   z-index: 0;
 }
 
 .heroPhone {
   position: relative;
   z-index: 1;
-}
-
-.phoneContent {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 2.25rem 1.125rem 1.75rem;
-}
-
-.phoneSpacer {
-  flex: 1 1 auto;
-  min-height: 0.75rem;
-}
-
-.tabBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex: none;
-  padding-top: 0.625rem;
-  border-top: 1px solid var(--line);
-}
-
-.tabItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: 0.5625rem;
-  color: var(--ink-4);
-}
-
-.tabItemActive {
-  color: var(--accent);
-}
-
-.feedHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.feedTitle {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 1.25rem;
-  color: var(--ink);
-}
-
-.feedSearch {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  background: var(--lilac);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  flex: none;
-}
-
-.postCard {
-  border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  padding: 0.875rem;
-  text-align: left;
-}
-
-.postCardAlt {
-  margin-top: 0.75rem;
-  padding-bottom: 0;
-}
-
-.chipRow {
-  display: flex;
-  gap: 0.4rem;
-  margin-bottom: 0.875rem;
-}
-
-.chip {
-  flex: none;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  padding: 0.3rem 0.625rem;
-  border-radius: 999px;
-  color: var(--ink-4);
-  background: var(--lilac);
-}
-
-.chipActive {
-  color: var(--on-accent);
-  background: var(--accent-fill);
-}
-
-.coverAlt {
-  background: linear-gradient(155deg, var(--brand-gold) 0%, var(--brand-plum) 100%);
-}
-
-.postHead {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.avatar {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  background: var(--accent-fill);
-  color: var(--on-accent);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.8125rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-}
-
-.postHeadText {
-  line-height: 1.25;
-}
-
-.postName {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.postMeta {
-  font-size: 0.75rem;
-  color: var(--ink-3);
-}
-
-.bookRow {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  margin-bottom: 0.75rem;
-}
-
-.cover {
-  width: 2.25rem;
-  height: 3.125rem;
-  border-radius: 0.25rem;
-  background: linear-gradient(155deg, var(--brand-violet) 0%, var(--brand-plum) 100%);
-  flex: none;
-  position: relative;
-}
-
-.cover::after {
-  content: "";
-  position: absolute;
-  left: 0.3rem;
-  right: 0.3rem;
-  top: 0.45rem;
-  height: 1.5px;
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 5px 0 rgba(255, 255, 255, 0.4), 0 10px 0 rgba(255, 255, 255, 0.28);
-}
-
-.bookText {
-  min-width: 0;
-}
-
-.bookTitle {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.875rem;
-  color: var(--ink);
-  line-height: 1.2;
-}
-
-.bookAuthor {
-  font-size: 0.6875rem;
-  color: var(--ink-3);
-  margin-top: 0.125rem;
-}
-
-.progressTrack {
-  height: 0.25rem;
-  border-radius: 999px;
-  background: var(--lilac);
-  overflow: hidden;
-  margin-bottom: 0.75rem;
-}
-
-.progressFill {
-  height: 100%;
-  width: 62%;
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.quote {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--ink);
-  margin-bottom: 0.875rem;
-}
-
-.quoteMark {
-  background: var(--lilac);
-  padding: 0.05em 0.15em;
-  border-radius: 0.2em;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.75rem;
-  color: var(--ink-3);
-}
-
-.actions span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
 }
 
 /* ---------- marginalia ---------- */
@@ -851,7 +627,7 @@
     transform: scale(0.9);
   }
   to {
-    opacity: 0.45;
+    opacity: calc(0.3 * var(--glow-strength));
     transform: scale(1);
   }
 }

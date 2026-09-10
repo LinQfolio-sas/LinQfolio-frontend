@@ -3,6 +3,7 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import Navbar from "./Navbar";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { postHref } from "@/lib/seo";
 import { RUBRICS, getRubric } from "@/lib/blog/rubrics";
 import { pick, type PostGroup, type PostMeta, type RubricId } from "@/lib/blog/types";
 import styles from "./BlogPage.module.css";
@@ -148,7 +149,7 @@ export default function BlogPage({ groups }: { groups: PostGroup[] }) {
             <div className={styles.stage}>
               <span className={styles.ribbon} aria-hidden="true" />
               <a
-                href={`/blog/${featured.slug}`}
+                href={postHref(featured.slug, lang)}
                 className={styles.stageLink}
                 tabIndex={-1}
                 aria-hidden="true"
@@ -166,7 +167,7 @@ export default function BlogPage({ groups }: { groups: PostGroup[] }) {
             <div className={styles.featureText}>
               <p className={styles.eyebrow}>{getRubric(featured.rubric)[lang]}</p>
               <h2 className={styles.featureTitle}>
-                <a href={`/blog/${featured.slug}`} className={styles.titleLink}>
+                <a href={postHref(featured.slug, lang)} className={styles.titleLink}>
                   {featured.title}
                 </a>
               </h2>
@@ -182,7 +183,7 @@ export default function BlogPage({ groups }: { groups: PostGroup[] }) {
                 </span>
               </Folio>
 
-              <a href={`/blog/${featured.slug}`} className={styles.btnPrimary}>
+              <a href={postHref(featured.slug, lang)} className={styles.btnPrimary}>
                 {t.read}
               </a>
             </div>
@@ -232,7 +233,7 @@ export default function BlogPage({ groups }: { groups: PostGroup[] }) {
             <ul className={styles.row}>
               {shown.map((post) => (
                 <li key={post.slug} className={styles.slot}>
-                  <a href={`/blog/${post.slug}`} className={styles.slotLink}>
+                  <a href={postHref(post.slug, lang)} className={styles.slotLink}>
                     <Book post={post} lang={lang} />
                     <span className={styles.slotFolio}>
                       <span className={styles.folioRule} aria-hidden="true" />

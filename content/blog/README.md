@@ -14,14 +14,23 @@ Nommez-le `mon-article.fr.md` (le nom avant `.fr` devient l'URL :
 `/blog/mon-article`). Pour la version anglaise, ajoutez `mon-article.en.md`
 à côté, avec exactement le même nom de base.
 
-Si une seule langue existe, elle est servie aux deux publics, avec une
-mention qui le signale.
+Chaque journal ne liste que ses propres articles : un texte français
+n'apparaît pas dans `/en/blog`, et réciproquement. Un index qui mélangerait
+les deux serait une mauvaise page pour son lecteur, et un document ambigu
+pour les moteurs, qui ne le classeraient proprement dans aucune des deux
+langues. Traduire un article, c'est donc le publier ; ne pas le traduire,
+c'est le réserver à un public.
+
+Le nom de fichier identifie l'article, il n'est pas forcément son adresse :
+chaque traduction peut déclarer son propre `slug` (voir le tableau
+ci-dessous).
 
 ## 2. Remplir l'en-tête
 
 ```markdown
 ---
 title: "Le titre de l'article"
+slug: le-titre-de-l-article   # facultatif : par défaut, le nom du fichier
 excerpt: "Deux phrases qui donnent envie de cliquer. Visible sur /blog."
 rubric: lecture
 date: 2026-08-28
@@ -35,6 +44,7 @@ Le texte de l'article commence ici.
 
 | Champ        | Obligatoire | Détail                                                        |
 | ------------ | ----------- | ------------------------------------------------------------- |
+| `slug`       | non         | Segment d'URL de cette langue, quand il doit différer du nom de fichier. Une traduction mérite une adresse dans sa langue : `how-the-reading-dna-works` plutôt que `comment-fonctionne-le-reading-dna`. Sert aussi à conserver une adresse déjà indexée après un renommage — c'est une redirection en moins. |
 | `title`      | oui         | Sans titre, l'article est ignoré (pratique pour un brouillon). Il est composé sur la couverture du livre : visez 8 mots au maximum. |
 | `date`       | oui         | Format `AAAA-MM-JJ`. Trie le journal, du plus récent au plus ancien. |
 | `excerpt`    | recommandé  | Résumé affiché à la une et dans « Lire aussi ».                |

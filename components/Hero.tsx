@@ -144,30 +144,7 @@ const COPY = {
     googlePlay: "Google Play",
     note1: <>j&rsquo;ai relu ce chapitre trois fois 😭</>,
     note2: <>+34 dans « Lectures d&rsquo;été »</>,
-    feedTitle: "Mon fil",
-    chipAll: "Tout",
-    chipNovels: "Romans",
-    chipNonfiction: "Essais",
-    chipComics: "BD",
-    post1Name: "Léa M.",
-    post1Meta: "lit · 62 % · chapitre 14",
-    book1Title: "Les Heures suspendues",
-    book1Author: "N. Aubry",
-    quote: (
-      <>
-        « Il y a des{" "}
-        <span className={styles.quoteMark}>silences qu&rsquo;on n&rsquo;ose pas rompre</span>,
-        même en pensée. »
-      </>
-    ),
-    post2Name: "Marc",
-    post2Meta: "vient de commencer ✨",
-    book2Title: "Le Bruit du dégel",
-    book2Author: "R. Lachance",
-    tabFeed: "Fil",
-    tabExplore: "Explorer",
-    tabCircles: "Cercles",
-    tabProfile: "Profil",
+    phoneAlt: "Le fil d’actualité de LinQfolio : les lecteurs que vous suivez partagent leurs lectures et leur Reading DNA",
     cardReviewQuote: (
       <>
         « Je n&rsquo;ouvre plus un livre sans <em>LinQfolio</em>. »
@@ -204,30 +181,7 @@ const COPY = {
     googlePlay: "Google Play",
     note1: <>I reread this chapter three times 😭</>,
     note2: <>+34 in &ldquo;Summer Reads&rdquo;</>,
-    feedTitle: "My Feed",
-    chipAll: "All",
-    chipNovels: "Novels",
-    chipNonfiction: "Nonfiction",
-    chipComics: "Comics",
-    post1Name: "Léa M.",
-    post1Meta: "reading · 62% · chapter 14",
-    book1Title: "The Suspended Hours",
-    book1Author: "N. Aubry",
-    quote: (
-      <>
-        &ldquo;There are{" "}
-        <span className={styles.quoteMark}>silences we don&rsquo;t dare break</span>,
-        even in thought.&rdquo;
-      </>
-    ),
-    post2Name: "Marc",
-    post2Meta: "just started ✨",
-    book2Title: "The Sound of Thaw",
-    book2Author: "R. Lachance",
-    tabFeed: "Feed",
-    tabExplore: "Explore",
-    tabCircles: "Circles",
-    tabProfile: "Profile",
+    phoneAlt: "The LinQfolio news feed: readers you follow share what they’re reading and their Reading DNA",
     cardReviewQuote: (
       <>
         &ldquo;I don&rsquo;t open a book without LinQfolio anymore.&rdquo;
@@ -423,155 +377,13 @@ export default function Hero() {
             style={delay("0.55s")}
             data-phone-flight="from"
           >
-            <div className={styles.phoneContent}>
-              <div className={styles.feedHeader}>
-                <span className={styles.feedTitle}>{t.feedTitle}</span>
-                <span className={styles.feedSearch} aria-hidden="true">
-                  <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
-                    <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.6" />
-                    <path d="M18 18l-4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                  </svg>
-                </span>
-              </div>
-
-              <div className={styles.chipRow} aria-hidden="true">
-                <span className={`${styles.chip} ${styles.chipActive}`}>{t.chipAll}</span>
-                <span className={styles.chip}>{t.chipNovels}</span>
-                <span className={styles.chip}>{t.chipNonfiction}</span>
-                <span className={styles.chip}>{t.chipComics}</span>
-              </div>
-
-              <div className={styles.postCard}>
-                <div className={styles.postHead}>
-                  <span className={styles.avatar} aria-hidden="true">
-                    L
-                  </span>
-                  <span className={styles.postHeadText}>
-                    <span className={styles.postName}>{t.post1Name}</span>
-                    <br />
-                    <span className={styles.postMeta}>{t.post1Meta}</span>
-                  </span>
-                </div>
-
-                <div className={styles.bookRow}>
-                  <div className={styles.cover} aria-hidden="true" />
-                  <div className={styles.bookText}>
-                    <div className={styles.bookTitle}>{t.book1Title}</div>
-                    <div className={styles.bookAuthor}>{t.book1Author}</div>
-                  </div>
-                </div>
-
-                <div className={styles.progressTrack} aria-hidden="true">
-                  <div className={styles.progressFill} />
-                </div>
-
-                <p className={styles.quote}>{t.quote}</p>
-
-                <div className={styles.actions} aria-hidden="true">
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M10 17S2.5 12.6 2.5 7.4A3.9 3.9 0 0 1 10 5.3a3.9 3.9 0 0 1 7.5 2.1C17.5 12.6 10 17 10 17Z"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    128
-                  </span>
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M2.5 9.3c0-3.6 3.4-6.3 7.5-6.3s7.5 2.7 7.5 6.3-3.4 6.3-7.5 6.3c-.8 0-1.6-.1-2.3-.3L4 17l1-3.2c-1.6-1.1-2.5-2.7-2.5-4.5Z"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    34
-                  </span>
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M5 2.75h10a.5.5 0 0 1 .5.5V17l-5.5-3.4L4.5 17V3.25a.5.5 0 0 1 .5-.5Z"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    12
-                  </span>
-                </div>
-              </div>
-
-              <div className={`${styles.postCard} ${styles.postCardAlt}`}>
-                <div className={styles.postHead}>
-                  <span className={styles.avatar} aria-hidden="true">
-                    M
-                  </span>
-                  <span className={styles.postHeadText}>
-                    <span className={styles.postName}>{t.post2Name}</span>
-                    <br />
-                    <span className={styles.postMeta}>{t.post2Meta}</span>
-                  </span>
-                </div>
-                <div className={styles.bookRow}>
-                  <div className={`${styles.cover} ${styles.coverAlt}`} aria-hidden="true" />
-                  <div className={styles.bookText}>
-                    <div className={styles.bookTitle}>{t.book2Title}</div>
-                    <div className={styles.bookAuthor}>{t.book2Author}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.phoneSpacer} aria-hidden="true" />
-
-              <div className={styles.tabBar} aria-hidden="true">
-                <span className={`${styles.tabItem} ${styles.tabItemActive}`}>
-                  <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M3 9.5 10 3l7 6.5V17a.8.8 0 0 1-.8.8h-3.4a.8.8 0 0 1-.8-.8v-3.5a.8.8 0 0 0-.8-.8H8.8a.8.8 0 0 0-.8.8V17a.8.8 0 0 1-.8.8H3.8a.8.8 0 0 1-.8-.8V9.5Z"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {t.tabFeed}
-                </span>
-                <span className={styles.tabItem}>
-                  <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
-                    <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.4" />
-                    <path d="M17.5 17.5 14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                  </svg>
-                  {t.tabExplore}
-                </span>
-                <span className={styles.tabItem}>
-                  <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
-                    <circle cx="7" cy="7.5" r="2.75" stroke="currentColor" strokeWidth="1.4" />
-                    <circle cx="14" cy="8.5" r="2.25" stroke="currentColor" strokeWidth="1.4" />
-                    <path
-                      d="M2 16c.5-2.8 2.3-4.3 5-4.3s4.5 1.5 5 4.3M11.5 15.6c.4-2.2 1.7-3.3 3.8-3.3s3.4 1.1 3.8 3.3"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  {t.tabCircles}
-                </span>
-                <span className={styles.tabItem}>
-                  <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
-                    <circle cx="10" cy="6.5" r="3.5" stroke="currentColor" strokeWidth="1.4" />
-                    <path
-                      d="M3 17c.7-3.7 3.3-5.7 7-5.7s6.3 2 7 5.7"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  {t.tabProfile}
-                </span>
-              </div>
-            </div>
+            <img
+              src="/SCREENS/hero.webp"
+              alt={t.phoneAlt}
+              width={1206}
+              height={2622}
+              fetchPriority="high"
+            />
           </Phone>
         </div>
       </div>

@@ -13,8 +13,9 @@ import styles from "./ThemeToggle.module.css";
  * le bon état même avant que le JavaScript n'arrive.
  *
  * `aria-pressed` est le seul point qui dépend de l'état React. Serveur et premier
- * rendu client partent tous deux de « clair », donc l'hydratation correspond ;
- * la valeur réelle est posée juste après, avant la première peinture.
+ * rendu client partent tous deux de « clair », l'état d'arrivée du site, donc
+ * l'hydratation correspond ; un choix « sombre » enregistré est repris juste
+ * après, avant la première peinture.
  */
 
 const COPY = {
@@ -48,7 +49,7 @@ function MoonIcon() {
 }
 
 export default function ThemeToggle({ className }: { className?: string }) {
-  const { resolved, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const t = useT(COPY);
 
   return (
@@ -62,7 +63,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
         type="button"
         className={`${styles.option} ${styles.light}`}
         aria-label={t.light}
-        aria-pressed={resolved === "light"}
+        aria-pressed={theme === "light"}
         onClick={() => setTheme("light")}
       >
         <SunIcon />
@@ -71,7 +72,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
         type="button"
         className={`${styles.option} ${styles.dark}`}
         aria-label={t.dark}
-        aria-pressed={resolved === "dark"}
+        aria-pressed={theme === "dark"}
         onClick={() => setTheme("dark")}
       >
         <MoonIcon />

@@ -16,58 +16,43 @@ import {
   type Theme,
 } from "./theme-script";
 
-type Resolved = "light" | "dark";
-
 type ThemeContextValue = {
-  /** Ce qui est enregistré : `system` tant que personne n'a choisi. */
+  /** Le thème affiché : `light` tant que personne n'a choisi le sombre. */
   theme: Theme;
-  /** Ce qui est réellement affiché, préférence système résolue. */
-  resolved: Resolved;
   setTheme: (theme: Theme) => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 /* ---------------------------------------------------------------------------
-   Le thème vit dans deux systèmes extérieurs à React — le stockage local et
-   `prefers-color-scheme`. On le lit donc avec `useSyncExternalStore` plutôt
-   qu'avec un état recopié dans un effet : pas de rendu en cascade, et React
-   remplace l'instantané serveur par celui du client avant la première peinture.
+   Le thème vit dans un système extérieur à React — le stockage local. On le
+   lit donc avec `useSyncExternalStore` plutôt qu'avec un état recopié dans un
+   effet : pas de rendu en cascade, et React remplace l'instantané serveur par
+   celui du client avant la première peinture.
 
-   L'instantané est une chaîne « choix|résolu » pour rester comparable par
-   valeur, ce qu'attend `useSyncExternalStore`.
+   La préférence système n'entre pas dans le calcul : l'arrivée se fait en
+   clair, seul un choix enregistré fait passer au sombre.
    ------------------------------------------------------------------------ */
 
-const SERVER_SNAPSHOT = "system|light";
+const SERVER_SNAPSHOT: Theme = "light";
 
 const listeners = new Set<() => void>();
-let cached: string | null = null;
+let cached: Theme | null = null;
 
-function systemPrefersDark(): boolean {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
-function readStored(): Theme {
-  try {
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return isTheme(stored) ? stored : "system";
-  } catch {
-    // Navigation privée stricte : le thème vaut pour la session.
-    return "system";
-  }
-}
-
-function getSnapshot(): string {
+function getSnapshot(): Theme {
   if (cached === null) {
-    const stored = readStored();
-    const resolved =
-      stored === "system" ? (systemPrefersDark() ? "dark" : "light") : stored;
-    cached = `${stored}|${resolved}`;
+    try {
+      const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+      cached = isTheme(stored) ? stored : "light";
+    } catch {
+      // Navigation privée stricte : le thème vaut pour la session.
+      cached = "light";
+    }
   }
   return cached;
 }
 
-function getServerSnapshot(): string {
+function getServerSnapshot(): Theme {
   return SERVER_SNAPSHOT;
 }
 
@@ -78,31 +63,26 @@ function invalidate() {
 
 function subscribe(onChange: () => void): () => void {
   listeners.add(onChange);
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  const onMedia = () => invalidate();
   // `storage` garde les onglets ouverts en accord entre eux.
   const onStorage = (event: StorageEvent) => {
     if (event.key === null || event.key === THEME_STORAGE_KEY) invalidate();
   };
-  media.addEventListener("change", onMedia);
   window.addEventListener("storage", onStorage);
   return () => {
     listeners.delete(onChange);
-    media.removeEventListener("change", onMedia);
     window.removeEventListener("storage", onStorage);
   };
 }
 
 function apply(theme: Theme) {
   const root = document.documentElement;
-  if (theme === "system") root.removeAttribute("data-theme");
+  if (theme === "light") root.removeAttribute("data-theme");
   else root.setAttribute("data-theme", theme);
   syncThemeColorMeta(theme);
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const [theme, resolved] = snapshot.split("|") as [Theme, Resolved];
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   // En développement, le double montage de Strict Mode réinitialise les
   // attributs de <html> à ce que React gère depuis le JSX, ce qui efface celui
@@ -123,8 +103,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      if (next === "system") window.localStorage.removeItem(THEME_STORAGE_KEY);
-      else window.localStorage.setItem(THEME_STORAGE_KEY, next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // Stockage refusé : le choix vaut pour la session.
     }
@@ -133,10 +112,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     invalidate();
   }, []);
 
-  const value = useMemo(
-    () => ({ theme, resolved, setTheme }),
-    [theme, resolved, setTheme],
-  );
+  const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

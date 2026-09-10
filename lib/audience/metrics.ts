@@ -25,6 +25,7 @@ export const PAGE_TYPES = [
   "faq",
   "about",
   "legal",
+  "links",
   "other",
 ] as const;
 
@@ -39,7 +40,7 @@ export const CHANNELS = [
   "direct",
 ] as const;
 
-export const PLACEMENTS = ["hero", "cta_footer"] as const;
+export const PLACEMENTS = ["hero", "header", "cta_footer", "links"] as const;
 export const STORES = ["app_store", "google_play"] as const;
 export const DEVICES = ["mobile", "tablet", "desktop"] as const;
 

@@ -1,48 +1,45 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 export type Lang = "fr" | "en";
 
 type LanguageContextValue = {
   lang: Lang;
-  setLang: (lang: Lang) => void;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
-const STORAGE_KEY = "linqfolio-lang";
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("fr");
-
-  // En navigation privée stricte, l'accès à `localStorage` lève. Sans garde,
-  // l'exception remonte pendant l'hydratation et emporte toute la page.
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored === "fr" || stored === "en") setLangState(stored);
-    } catch {
-      // La langue vaut alors pour la session.
-    }
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // Idem : rien à persister, on continue.
-    }
-  }, [lang]);
+/**
+ * La langue de la page, décidée par l'URL.
+ *
+ * Elle l'était auparavant par `localStorage` et `navigator.languages`, ce qui
+ * donnait une bascule instantanée mais une seule adresse pour deux langues.
+ * Le prix était lourd : le HTML servi était toujours français, donc l'anglais
+ * n'existait pour aucun moteur de recherche — pas une position perdue, pas une
+ * page mal classée, simplement rien du tout. La moitié du contenu du site
+ * était invisible.
+ *
+ * Le français vit désormais à la racine et l'anglais sous `/en` (voir
+ * `lib/seo.ts`). Chaque langue a son adresse, son `<html lang>` posé par le
+ * serveur et son entrée dans le plan du site ; le contexte ne fait plus que
+ * distribuer, aux composants qui en ont besoin, ce que l'URL a déjà tranché.
+ *
+ * Il n'y a donc plus de `setLang` : changer de langue, c'est changer de page.
+ * `LanguageToggle` s'en charge par un lien, ce qui a l'avantage secondaire
+ * d'être une bascule que Google peut suivre.
+ */
+export function LanguageProvider({
+  lang,
+  children,
+}: {
+  lang: Lang;
+  children: ReactNode;
+}) {
+  const value = useMemo(() => ({ lang }), [lang]);
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang: setLangState }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

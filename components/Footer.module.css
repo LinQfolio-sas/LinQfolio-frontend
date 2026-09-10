@@ -16,8 +16,8 @@
   width: 34rem;
   padding-bottom: 34rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%, var(--lilac) 0%, transparent 68%);
-  opacity: calc(0.7 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.1 * var(--glow-strength));
 }
 
 .grain {

@@ -5,6 +5,15 @@ export type RubricId = "lecture" | "communaute" | "coulisses" | "produit";
 /** Front matter an author writes at the top of a `.md` file. */
 export type PostFrontmatter = {
   title: string;
+  /**
+   * URL segment for this language, when it should differ from the file name.
+   *
+   * A translation deserves a slug in its own language -- an English reader
+   * should not be sent to `/en/blog/comment-fonctionne-le-reading-dna`. It
+   * also lets an already-indexed address survive a rename: drop the old slug
+   * here and no redirect is needed.
+   */
+  slug?: string;
   excerpt: string;
   rubric: RubricId;
   date: string; // ISO, e.g. 2026-08-28
@@ -19,7 +28,10 @@ export type PostFrontmatter = {
 
 /** Everything the index needs. Serializable: crosses the server → client boundary. */
 export type PostMeta = PostFrontmatter & {
+  /** URL segment, in this language. Feed it to `postHref`. */
   slug: string;
+  /** File name, shared by every language. Identifies the article itself. */
+  id: string;
   lang: Lang;
   /** Minutes, computed from the body at 200 words per minute. */
   readingMinutes: number;
@@ -33,7 +45,9 @@ export type Post = PostMeta & {
 
 /** The same article in every language it exists in. */
 export type PostGroup<T = PostMeta> = {
-  slug: string;
+  /** File name, shared by every language. Not necessarily a URL segment: each
+   *  translation carries its own in `PostMeta.slug`. */
+  id: string;
   fr?: T;
   en?: T;
 };

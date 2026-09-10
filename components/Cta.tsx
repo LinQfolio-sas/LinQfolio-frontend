@@ -178,10 +178,10 @@ export default function Cta() {
             <div className={styles.qrCard}>
               <img
                 className={styles.qrImage}
-                src="/qr-chapitre.svg"
+                src="/qr-cta.svg"
                 alt=""
-                width={25}
-                height={25}
+                width={33}
+                height={33}
               />
               <span className={styles.qrLabel}>{t.qrLabel}</span>
             </div>
@@ -205,7 +205,7 @@ export default function Cta() {
           <div className={styles.storeRow}>
             <a
               href={STORE_LINKS.appStore}
-              className={styles.storeBadge}
+              className={`${styles.storeBadge} ${styles.appStore}`}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackStoreClick("app_store", "cta_footer", lang)}
@@ -218,7 +218,7 @@ export default function Cta() {
             </a>
             <a
               href={STORE_LINKS.googlePlay}
-              className={styles.storeBadge}
+              className={`${styles.storeBadge} ${styles.googlePlay}`}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackStoreClick("google_play", "cta_footer", lang)}

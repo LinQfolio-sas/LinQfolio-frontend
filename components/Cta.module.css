@@ -47,14 +47,6 @@
   --cta-end: #200c46;
 }
 
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-theme="light"])) .section {
-    --cta-top: #40197a;
-    --cta-mid: #2b1059;
-    --cta-end: #200c46;
-  }
-}
-
 .wash {
   position: absolute;
   top: -10%;
@@ -65,8 +57,8 @@
   padding-bottom: 46rem;
   border-radius: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle at 50% 30%, var(--glow) 0%, transparent 62%);
-  opacity: 0.22;
+  background: var(--glow);
+  opacity: 0.08;
 }
 
 .grain {
@@ -186,8 +178,8 @@
   z-index: 3;
   bottom: -1.5rem;
   left: -1.875rem;
-  width: 6.25rem;
-  padding: 0.5625rem 0.5625rem 0.5rem;
+  width: 7rem;
+  padding: 0.75rem 0.75rem 0.625rem;
   border-radius: 0.625rem;
   background: var(--paper);
   border: 1px solid var(--line);
@@ -218,7 +210,7 @@
 
 @media (max-width: 26rem) {
   .qrCard {
-    width: 5.5rem;
+    width: 6.25rem;
     left: -1.25rem;
     bottom: -1.25rem;
   }
@@ -310,25 +302,55 @@
   margin-top: 1.125rem;
 }
 
+/* Deux pastilles en noir et blanc, comme les deux encres d'une jaquette.
+   Chacune pose ses valeurs dans `--badge*`, que la règle commune lit : aucune
+   des deux ne se bat en spécificité avec l'autre ni avec le survol.
+
+   Le filet crème n'est pas un ornement, il porte la pastille noire. Le bandeau
+   est déjà une nuit prune — l'aplat d'encre (#1c1024) n'y atteint que 1.05:1
+   contre le bas du dégradé, il ne peut donc pas se délimiter lui-même. C'est
+   le liseré qui tient les 3:1 demandés par WCAG 1.4.11 à la frontière d'un
+   contrôle, et très au-delà : 12.8:1 sur le fond le plus clair du bandeau
+   (#40197a, thème sombre), 18.8:1 sur le plus foncé. La pastille noire se lit
+   donc comme un contour, la blanche comme un aplat.
+
+   Le texte tient 18.1:1 dans les deux sens — encre sur crème, crème sur encre.
+   La couleur ne porte d'ailleurs aucune information seule : chaque pastille
+   dit son magasin en toutes lettres. */
 .storeBadge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   border-radius: 999px;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--badge);
+  color: var(--badge-ink);
   font-family: var(--font-body);
   font-size: 0.9375rem;
   font-weight: 600;
   padding: 0.875rem 1.75rem;
   text-decoration: none;
-  border: 1.5px solid var(--paper);
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  border: 1.5px solid var(--badge-line);
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
+.appStore {
+  --badge: var(--paper);
+  --badge-ink: var(--ink);
+  --badge-line: var(--paper);
+  --badge-hover: color-mix(in srgb, var(--paper) 86%, var(--ink));
+}
+
+.googlePlay {
+  --badge: var(--ink);
+  --badge-ink: var(--paper);
+  --badge-line: var(--paper);
+  --badge-hover: color-mix(in srgb, var(--ink) 84%, var(--paper));
+}
+
+/* Le filet ne bouge pas au survol : c'est lui qui délimite la pastille noire,
+   il doit rester crème quand le remplissage s'éclaircit. */
 .storeBadge:hover {
-  background: var(--marker-soft);
-  border-color: var(--marker-soft);
+  background: var(--badge-hover);
   transform: translateY(-1px);
 }
 

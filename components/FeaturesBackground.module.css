@@ -1,7 +1,8 @@
-/* Same visual grammar as the Hero / FAQ / About page backgrounds: soft
-   off-canvas glow blobs + a fine grain texture + one giant faint on-brand
-   glyph. Here the glyph is the active chapter number, so it changes as the
-   reader scrolls through the 9 features instead of staying static. */
+/* Same visual grammar as the Hero background: flat off-canvas discs in a
+   single tint (`--glow`, opacity only, no gradient) + a fine grain texture +
+   one giant faint on-brand glyph. Here the glyph is the active chapter
+   number, so it changes as the reader scrolls through the 9 features instead
+   of staying static. */
 
 .wrap {
   position: absolute;
@@ -18,8 +19,8 @@
   width: 36%;
   padding-bottom: 36%;
   border-radius: 50%;
-  background: radial-gradient(circle at 42% 42%, var(--glow) 0%, var(--glow-fade) 62%);
-  opacity: calc(0.34 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.16 * var(--glow-strength));
 }
 
 .washBottom {
@@ -29,8 +30,8 @@
   width: 30%;
   padding-bottom: 30%;
   border-radius: 50%;
-  background: radial-gradient(circle at 60% 38%, var(--lilac) 0%, var(--lilac-fade) 68%);
-  opacity: calc(0.8 * var(--glow-strength));
+  background: var(--glow);
+  opacity: calc(0.1 * var(--glow-strength));
 }
 
 .grain {

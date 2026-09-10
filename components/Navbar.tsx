@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
+import DownloadDialog from "./DownloadDialog";
 import LanguageToggle from "./LanguageToggle";
 import ThemeToggle from "./ThemeToggle";
-import { useT } from "@/lib/i18n/LanguageContext";
+import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
+import { href } from "@/lib/seo";
 import styles from "./Navbar.module.css";
 
 /** The site header. One instance, used by every page. */
@@ -34,12 +37,14 @@ const LINKS = [
 ] as const;
 
 export default function Navbar() {
+  const { lang } = useLanguage();
   const t = useT(COPY);
   const pathname = usePathname() ?? "/";
+  const [downloadOpen, setDownloadOpen] = useState(false);
 
   return (
     <nav className={styles.nav} aria-label={t.aria}>
-      <a href="/" className={styles.brand} aria-label={t.home}>
+      <a href={href("home", lang)} className={styles.brand} aria-label={t.home}>
         <img
           className={styles.brandMark}
           src="/linqfolio/LinQFolio_Secondary_Logo_Violet_Large.png"
@@ -73,10 +78,26 @@ export default function Navbar() {
             reprend sa place dans le pied de page. */}
         <ThemeToggle className={styles.themeToggle} />
         <LanguageToggle />
-        <a href="/#telecharger" className={styles.cta}>
+        {/* Le lien reste un lien : sans JavaScript il mène au bandeau de fin
+            de la page d'accueil, qui porte les mêmes deux magasins. Avec, il
+            ouvre la carte sur place plutôt que de faire faire l'aller-retour. */}
+        <a
+          href={`${href("home", lang)}#telecharger`}
+          className={styles.cta}
+          aria-haspopup="dialog"
+          onClick={(event) => {
+            event.preventDefault();
+            setDownloadOpen(true);
+          }}
+        >
           {t.cta}
         </a>
       </div>
+
+      <DownloadDialog
+        open={downloadOpen}
+        onClose={() => setDownloadOpen(false)}
+      />
     </nav>
   );
 }

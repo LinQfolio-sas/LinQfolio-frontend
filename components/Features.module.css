@@ -76,21 +76,22 @@
   min-height: 20rem;
 }
 
-/* table of contents */
+/* table of contents — each entry links to its chapter's anchor */
 
-.toc {
-  list-style: none;
+.tocList {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  margin: 0;
-  padding: 0;
+  /* the links carry 0.3rem of padding above and below: the same 1.15rem
+     rhythm between lines, with a taller click target */
+  gap: 0.55rem;
 }
 
 .tocItem {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-radius: 2px;
   font-family: var(--font-body);
   font-size: 0.8125rem;
   color: var(--ink-4);
@@ -107,6 +108,7 @@
   border-bottom: 1px dotted currentColor;
   opacity: 0.45;
   margin-bottom: 0.2em;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .tocNumber {
@@ -114,6 +116,7 @@
   font-family: var(--font-display);
   font-style: italic;
   font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
 }
 
 .tocItemActive {
@@ -124,6 +127,23 @@
 
 .tocItemActive .tocNumber {
   color: var(--accent);
+}
+
+/* Hover traces the leader out to the chapter number, the way a finger runs
+   along a printed contents page. */
+@media (hover: hover) {
+  .tocItem:hover {
+    color: var(--ink);
+  }
+
+  .tocItem:hover .tocDots,
+  .tocItem:hover .tocNumber {
+    color: var(--accent);
+  }
+
+  .tocItem:hover .tocDots {
+    opacity: 0.9;
+  }
 }
 
 /* text column */
@@ -146,21 +166,16 @@
   justify-content: center;
 }
 
+/* The screen is an app screenshot: the phone sets its size and the screenshot
+   scales with it as a whole (see Phone.module.css). */
 .featurePhone {
-  width: min(100%, 15.5rem);
+  --phone-rem: 18;
+  width: min(100%, calc(var(--phone-rem) * 1rem));
 }
 
 .screenInner {
   position: absolute;
   inset: 0;
-  padding: 2rem 0.95rem 1.5rem;
-  text-align: left;
-}
-
-.screenContent {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 /* scroll hint */
@@ -195,376 +210,14 @@
   }
 }
 
-/* ============================================================
-   feature screen mockups
-   ============================================================ */
-
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  background: var(--accent-fill);
-  color: var(--on-accent);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.8125rem;
-  flex: none;
-}
-
-.postHead {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.postName {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.postMeta {
-  font-size: 0.75rem;
-  color: var(--ink-4);
-}
-
-.bookRow {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  margin-bottom: 0.75rem;
-}
-
-.cover {
-  width: 2.25rem;
-  height: 3.125rem;
-  border-radius: 0.25rem;
-  background: linear-gradient(155deg, var(--brand-violet) 0%, var(--brand-plum) 100%);
-  flex: none;
-}
-
-.coverAlt {
-  background: linear-gradient(155deg, var(--brand-gold) 0%, var(--brand-plum) 100%);
-}
-
-.bookTitle {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.875rem;
-  color: var(--ink);
-  line-height: 1.2;
-}
-
-.bookAuthor {
-  font-size: 0.6875rem;
-  color: var(--ink-4);
-  margin-top: 0.125rem;
-}
-
-.progressTrack {
-  height: 0.25rem;
-  border-radius: 999px;
-  background: var(--lilac);
-  overflow: hidden;
-  margin-bottom: 0.75rem;
-}
-
-.progressFill {
-  height: 100%;
-  width: 62%;
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.quote {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--ink);
-  margin: 0;
-}
-
-/* feed */
-
-.feedPost {
-  border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  padding: 0.875rem;
-}
-
-/* reading dna */
-
-.dnaWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  margin: auto 0;
-}
-
-.dnaChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.dnaChip {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: var(--lilac);
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-}
-
-.dnaScore {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 2.5rem;
-  line-height: 1;
-  color: var(--ink);
-}
-
-/* scan isbn */
-
-.scanWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: auto 0;
-}
-
-.scanFrame {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3.5rem;
-  border: 1.5px dashed var(--accent-line);
-  border-radius: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  font-size: 1.25rem;
-}
-
-/* listes de lecture */
-
-.listWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin: auto 0;
-}
-
-.listWrap .discoverGrid {
-  margin-top: 0.5rem;
-}
-
-/* cercles */
-
-.circleList {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.circleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.circleAvatars {
-  display: flex;
-  flex: none;
-}
-
-.miniAvatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 999px;
-  background: var(--lilac);
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.6875rem;
-  border: 1.5px solid var(--paper);
-}
-
-.miniAvatar + .miniAvatar {
-  margin-left: -0.5rem;
-}
-
-.circleName {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-/* echanges */
-
-.swapCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.swapCaption {
-  font-size: 0.75rem;
-  color: var(--ink-4);
-  margin: 0;
-}
-
-.swapRow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.swapSide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.swapIcon {
-  color: var(--accent);
-  font-size: 1.125rem;
-}
-
-.swapPill {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--on-accent);
-  background: var(--accent-fill);
-  padding: 0.45rem 1.125rem;
-  border-radius: 999px;
-}
-
-/* mystery book */
-
-.streakWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin: auto 0;
-}
-
-.flameIcon {
-  font-size: 1.75rem;
-  margin-bottom: 0.25rem;
-}
-
-.streakNumber {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 2.75rem;
-  line-height: 1;
-  color: var(--ink);
-}
-
-.weekRow {
-  display: flex;
-  gap: 0.45rem;
-  margin-top: 1.25rem;
-}
-
-.dayDot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 999px;
-  background: var(--lilac);
-}
-
-.dayDotDone {
-  background: var(--accent);
-}
-
-/* messages */
-
-.chatThread {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.bubble {
-  max-width: 82%;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  padding: 0.5rem 0.75rem;
-  border-radius: 1rem;
-}
-
-.bubbleIn {
-  align-self: flex-start;
-  background: var(--lilac);
-  color: var(--ink);
-  border-bottom-left-radius: 0.25rem;
-}
-
-.bubbleOut {
-  align-self: flex-end;
-  background: var(--accent-fill);
-  color: var(--on-accent);
-  border-bottom-right-radius: 0.25rem;
-}
-
-.bubbleChip {
-  display: block;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.75rem;
-  margin-bottom: 0.2rem;
-  opacity: 0.75;
-}
-
-/* listes / decouverte grid */
-
-.discoverGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin: auto 0;
-}
-
-.discoverCover {
-  display: block;
-  aspect-ratio: 2 / 3;
-  border-radius: 0.375rem;
-}
-
-/* critiques */
-
-.reviewWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: auto 0;
-}
-
-.reviewStars {
-  color: var(--accent);
-  font-size: 0.8125rem;
-  letter-spacing: 0.05em;
-}
-
 /* ---------- responsive ---------- */
+
+/* On a short laptop screen the full-size phone would crowd the pinned frame. */
+@media (min-width: 62rem) and (max-height: 50rem) {
+  .featurePhone {
+    --phone-rem: 16;
+  }
+}
 
 @media (max-width: 61.999rem) {
   .layout {
@@ -575,23 +228,38 @@
   .toc {
     display: none;
   }
+
+  .featurePhone {
+    --phone-rem: 15.5;
+  }
 }
 
 @media (max-width: 36rem) {
+  /* The section name sits at the top edge of the frame, like a running
+     head, and the phone and its chapter share the space below it. */
   .inner {
-    padding: 0 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem;
   }
 
   .eyebrow {
     font-size: 0.75rem;
   }
 
+  /* The padding keeps the phone clear of the running head; `safe` sends any
+     overflow past the bottom edge instead of back up over it. */
   .layout {
+    flex: 1;
     grid-template-columns: 1fr;
+    align-content: center;
+    align-content: safe center;
     justify-items: center;
     text-align: center;
     gap: 1rem;
-    margin-top: 1.25rem;
+    margin-top: 0;
+    padding-top: 1.5rem;
     min-height: 0;
   }
 
@@ -599,22 +267,18 @@
     order: -1;
   }
 
+  /* A fixed width: the centred column shrinks to its content, so a
+     percentage here would have nothing to resolve against. */
   .featurePhone {
-    width: 11rem;
+    --phone-rem: 12.75;
+    width: calc(var(--phone-rem) * 1rem);
   }
 
-  /* scale the whole screen mockup down uniformly, so text and spacing
-     keep their designed proportions instead of reflowing/clipping */
-  .screenContent {
-    width: 140.9%;
-    height: 140.9%;
-    transform: scale(0.71);
-    transform-origin: top left;
-  }
-
+  /* Tall enough for the longest chapter (two-line title, four-line
+     description), so the column is centred on what it really holds. */
   .textCol {
     width: 100%;
-    min-height: 8rem;
+    min-height: 11.5rem;
   }
 
   .title {
@@ -629,5 +293,27 @@
 
   .scrollHint {
     display: none;
+  }
+}
+
+/* The pinned frame is 100svh: on a phone that is the viewport with the
+   browser bars showing, about 664px on a 6.1" iPhone in Safari. The phone
+   steps down so the chapter copy below it stays in frame. */
+@media (max-width: 36rem) and (max-height: 44rem) {
+  .featurePhone {
+    --phone-rem: 11.5;
+  }
+}
+
+@media (max-width: 36rem) and (max-height: 41rem) {
+  .featurePhone {
+    --phone-rem: 10;
+  }
+}
+
+/* iPhone SE and the like */
+@media (max-width: 36rem) and (max-height: 36rem) {
+  .featurePhone {
+    --phone-rem: 9;
   }
 }

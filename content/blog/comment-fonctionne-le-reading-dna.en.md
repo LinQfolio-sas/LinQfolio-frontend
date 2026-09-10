@@ -1,5 +1,8 @@
 ---
 title: "How LinQfolio's Reading DNA works"
+# Already indexed at this address on the previous site: keeping it costs
+# nothing, changing it would cost a redirect.
+slug: how-the-reading-dna-works
 excerpt: "Three loved books, a few abandoned ones, a few seconds of waiting, and you get a portrait of yourself as a reader. Here's the answer, with no magic and no jargon."
 rubric: produit
 date: 2026-07-23

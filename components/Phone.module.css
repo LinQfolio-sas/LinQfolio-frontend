@@ -1,13 +1,22 @@
-/* Le châssis est un objet : il garde sa teinte dans les deux thèmes. Seul
-   l'écran suit le thème, puisqu'il montre l'application. Le liseré interne
-   remplace l'ombre portée pour détacher l'appareil d'un fond sombre, où une
-   ombre ne se voit plus. */
+/* Le châssis est un objet : il garde sa teinte dans les deux thèmes. L'écran
+   aussi, puisqu'il montre une capture de l'application en thème clair. Le
+   liseré interne remplace l'ombre portée pour détacher l'appareil d'un fond
+   sombre, où une ombre ne se voit plus.
+
+   Tout est proportionnel à la largeur du téléphone (unités cqw) : l'écran
+   garde le format exact des captures, 1206 × 2622, à toutes les tailles, et
+   le téléphone du hero qui s'envole vers les fonctionnalités se superpose au
+   pixel près à celui qui l'attend (voir PhoneFlight). Les valeurs reprennent
+   le dessin à 18rem : 0.5rem de bord, 2.25rem de rayon d'écran, et le rayon du
+   châssis est la somme des deux pour que les coins restent concentriques. */
 .phone {
   position: relative;
-  aspect-ratio: 9 / 18;
+  container-type: inline-size;
+  display: flow-root;
   background: linear-gradient(165deg, var(--brand-plum), var(--brand-night));
-  border-radius: 2.75rem;
-  padding: 0.5rem;
+  /* 15.28 % de la largeur, exprimés aussi en part de la hauteur (7.24 %) :
+     un pourcentage vertical se rapporte à la hauteur de la boîte. */
+  border-radius: 15.28% / 7.24%;
   box-shadow:
     0 1.5rem 3rem -1rem rgb(var(--shadow-rgb) / 0.4),
     0 0.5rem 1rem -0.5rem rgb(var(--shadow-rgb) / 0.3),
@@ -37,34 +46,24 @@
   border-radius: 0 2px 2px 0;
 }
 
-.notch {
-  position: absolute;
-  top: 0.85rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5rem;
-  height: 1.05rem;
-  background: var(--brand-night);
-  border-radius: 999px;
-  z-index: 2;
-}
-
+/* Le fond est celui de l'application, #FAFBFF : c'est lui qui paraît sur les
+   bords pendant qu'une capture en remplace une autre. */
 .screen {
   position: relative;
-  height: 100%;
-  background: var(--paper);
-  border-radius: 2.25rem;
+  margin: 2.7778cqw;
+  aspect-ratio: 1206 / 2622;
+  border-radius: 12.5cqw;
   overflow: hidden;
+  background: #fafbff;
 }
 
-.homeIndicator {
+/* Le format de l'écran est celui de la capture : `contain` ne laisse ni
+   bande ni recadrage, il garantit seulement qu'aucune image n'est étirée. */
+.screen img {
   position: absolute;
-  bottom: 0.55rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 34%;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--fill-soft);
-  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }

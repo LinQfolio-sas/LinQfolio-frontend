@@ -56,18 +56,16 @@
 }
 
 /* ---------------------------------------------------------------------------
-   État du contrôle. Trois cas, tous en CSS pur pour qu'aucun rendu React ne
-   soit nécessaire avant l'affichage :
+   État du contrôle. Deux cas, tous deux en CSS pur pour qu'aucun rendu React
+   ne soit nécessaire avant l'affichage :
 
-     A. rien sur <html>  et OS clair   → clair actif   (règles de base)
-     B. [data-theme="dark"]            → sombre actif
-     C. OS sombre  et pas de choix explicite « clair » → sombre actif
+     A. rien sur <html>      → clair actif   (règles de base)
+     B. [data-theme="dark"]  → sombre actif
 
-   B et C ont la même spécificité et arrivent après A ; la plus tardive qui
-   matche l'emporte, ce qui donne exactement la précédence voulue.
+   B est plus spécifique que A et arrive après : la précédence est acquise.
    ------------------------------------------------------------------------ */
 
-/* A — clair actif */
+/* A — clair actif, l'état d'arrivée */
 .toggle .light {
   color: var(--paper);
 }
@@ -78,7 +76,7 @@
   color: var(--ink);
 }
 
-/* B — choix explicite « sombre » */
+/* B — choix explicite « sombre », le seul chemin vers le thème de nuit */
 :global(html[data-theme="dark"]) .toggle .thumb {
   transform: translateX(100%);
 }
@@ -90,22 +88,6 @@
 }
 :global(html[data-theme="dark"]) .toggle .dark {
   color: var(--paper);
-}
-
-/* C — préférence système, aucun choix contraire enregistré */
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-theme="light"])) .toggle .thumb {
-    transform: translateX(100%);
-  }
-  :global(html:not([data-theme="light"])) .toggle .light {
-    color: var(--ink-4);
-  }
-  :global(html:not([data-theme="light"])) .toggle .light:hover {
-    color: var(--ink);
-  }
-  :global(html:not([data-theme="light"])) .toggle .dark {
-    color: var(--paper);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

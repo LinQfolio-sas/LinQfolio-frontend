@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useT } from "@/lib/i18n/LanguageContext";
+import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
+import { href } from "@/lib/seo";
 import styles from "./Faq.module.css";
 
 type QA = { q: string; a: string };
@@ -51,6 +52,7 @@ const COPY = {
 
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
+  const { lang } = useLanguage();
   const t = useT(COPY);
 
   return (
@@ -88,7 +90,7 @@ export default function Faq() {
           })}
         </ul>
 
-        <a href="/faq" className={styles.more}>
+        <a href={href("faq", lang)} className={styles.more}>
           {t.more}
           <svg width="13" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
             <path

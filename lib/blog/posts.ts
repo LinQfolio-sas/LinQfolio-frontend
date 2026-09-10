@@ -18,13 +18,18 @@ import type { Post, PostGroup, PostMeta, RubricId } from "./types";
  * One Markdown file is one article: `<slug>.<lang>.md`. Adding an article
  * means dropping a file in that folder -- nothing else to register.
  * Everything here runs on the server, at build time.
+ *
+ * The file name identifies the article; it is not necessarily its address.
+ * A translation may declare its own `slug` in the front matter, so that
+ * `comment-fonctionne-le-reading-dna.en.md` is served at
+ * `/en/blog/how-the-reading-dna-works` rather than at the French slug.
  */
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "blog");
 const FILENAME = /^(.+)\.(fr|en)\.md$/;
 const RUBRIC_IDS = new Set<string>(RUBRICS.map((rubric) => rubric.id));
 
-function readFiles(): { slug: string; lang: Lang; raw: string }[] {
+function readFiles(): { id: string; lang: Lang; raw: string }[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
 
   return fs
@@ -34,7 +39,7 @@ function readFiles(): { slug: string; lang: Lang; raw: string }[] {
       Boolean(entry.match),
     )
     .map(({ name, match }) => ({
-      slug: match[1],
+      id: match[1],
       lang: match[2] as Lang,
       raw: fs.readFileSync(path.join(CONTENT_DIR, name), "utf8"),
     }));
@@ -42,7 +47,7 @@ function readFiles(): { slug: string; lang: Lang; raw: string }[] {
 
 type Entry = { meta: PostMeta; html: string };
 
-function toEntry(slug: string, lang: Lang, raw: string): Entry | null {
+function toEntry(id: string, lang: Lang, raw: string): Entry | null {
   const { data, body } = parseFrontmatter(raw);
 
   const title = typeof data.title === "string" ? typographicText(data.title) : "";
@@ -62,7 +67,9 @@ function toEntry(slug: string, lang: Lang, raw: string): Entry | null {
   const words = countWords(body);
 
   const meta: PostMeta = {
-    slug,
+    id,
+    // The front matter wins, the file name is the default.
+    slug: typeof data.slug === "string" && data.slug ? data.slug : id,
     lang,
     title,
     excerpt,
@@ -94,12 +101,12 @@ function byDateDesc(a: { date: string; title: string }, b: { date: string; title
 function loadGroups(): PostGroup<Entry>[] {
   const groups = new Map<string, PostGroup<Entry>>();
 
-  for (const { slug, lang, raw } of readFiles()) {
-    const entry = toEntry(slug, lang, raw);
+  for (const { id, lang, raw } of readFiles()) {
+    const entry = toEntry(id, lang, raw);
     if (!entry) continue;
-    const group = groups.get(slug) ?? { slug };
+    const group = groups.get(id) ?? { id };
     group[lang] = entry;
-    groups.set(slug, group);
+    groups.set(id, group);
   }
 
   return [...groups.values()].sort((a, b) => {
@@ -110,26 +117,52 @@ function loadGroups(): PostGroup<Entry>[] {
   });
 }
 
+function strip(group: PostGroup<Entry>): PostGroup {
+  return { id: group.id, fr: group.fr?.meta, en: group.en?.meta };
+}
+
 /** Every article, newest first, without bodies. Safe to send to the client. */
 export function getPostGroups(): PostGroup[] {
-  return loadGroups().map((group) => ({
-    slug: group.slug,
-    fr: group.fr?.meta,
-    en: group.en?.meta,
-  }));
+  return loadGroups().map(strip);
+}
+
+/**
+ * The articles that exist in a given language, newest first.
+ *
+ * The index of one language must never list the articles of the other: an
+ * English reader landing on a French title is a bad page, and a search engine
+ * reading it there is a mixed-language document, which it will rank for
+ * neither language cleanly.
+ */
+export function getPostGroupsIn(lang: Lang): PostGroup[] {
+  return loadGroups()
+    .filter((group) => group[lang])
+    .map(strip);
 }
 
 /** One article in every language it exists in, bodies included. */
-export function getPostGroup(slug: string): PostGroup<Post> | undefined {
-  const group = loadGroups().find((entry) => entry.slug === slug);
+export function getPostGroup(id: string): PostGroup<Post> | undefined {
+  const group = loadGroups().find((entry) => entry.id === id);
   if (!group) return undefined;
   return {
-    slug: group.slug,
+    id: group.id,
     fr: group.fr && { ...group.fr.meta, html: group.fr.html },
     en: group.en && { ...group.en.meta, html: group.en.html },
   };
 }
 
-export function getSlugs(): string[] {
-  return loadGroups().map((group) => group.slug);
+/** The article served at `/blog/<slug>` (or `/en/blog/<slug>`), by address. */
+export function getPostGroupByUrl(
+  slug: string,
+  lang: Lang,
+): PostGroup<Post> | undefined {
+  const group = loadGroups().find((entry) => entry[lang]?.meta.slug === slug);
+  return group && getPostGroup(group.id);
+}
+
+/** The URL segments to prerender for one language. */
+export function getSlugs(lang: Lang): string[] {
+  return loadGroups().flatMap((group) =>
+    group[lang] ? [group[lang]!.meta.slug] : [],
+  );
 }

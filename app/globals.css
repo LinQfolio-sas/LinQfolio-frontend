@@ -102,11 +102,9 @@
   --font-body-stack: var(--font-plex), system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-/* Thème sombre, choix explicite.
-   ⚠ Le bloc est repris à l'identique plus bas sous `prefers-color-scheme`, qui
-   couvre le mode « système » — l'état par défaut tant que personne n'a touché
-   au sélecteur. CSS n'ayant pas de mixin, les deux doivent rester synchrones :
-   toute valeur modifiée ici doit l'être là aussi. */
+/* Thème sombre, seul et unique.
+   Il ne se déclenche que sur choix explicite : `prefers-color-scheme` n'est
+   pas consulté, on arrive toujours sur le papier crème. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 
@@ -149,52 +147,6 @@
   --glass-edge: rgb(255 255 255 / 0.1);
   --object-edge: rgb(255 255 255 / 0.18);
   --object-edge-strong: rgb(255 255 255 / 0.26);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --paper: #16111f;
-    --surface: #1e1829;
-    --lilac: #262036;
-
-    --ink: #ece6f3;
-    --ink-2: #d2ccda;
-    --ink-3: #c1bbc9;
-    --ink-4: #a8a2af;
-
-    --line: color-mix(in srgb, var(--ink) 14%, transparent);
-    --line-2: color-mix(in srgb, var(--ink) 22%, transparent);
-    --line-3: color-mix(in srgb, var(--ink) 48%, transparent);
-    --fill-soft: color-mix(in srgb, var(--ink) 26%, transparent);
-    /* Réglure du hero et filet de la timeline. À poids égal, un trait clair
-     sur fond sombre se voit bien plus qu'un trait sombre sur crème : 8 %
-     dessinerait un papier quadrillé. */
-  --wash: color-mix(in srgb, var(--ink) 4%, transparent);
-
-    --accent: #b79aff;
-    --accent-strong: #cdb8ff;
-    --accent-fill: #6d3ff2;
-    --accent-fill-hover: #7b4bff;
-    --on-accent: #fffefc;
-    --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
-    --accent-wash: color-mix(in srgb, var(--accent) 16%, transparent);
-    --focus: #cdb8ff;
-
-    --glow: #a97dff;
-    --glow-fade: rgb(169 125 255 / 0);
-    --lilac-fade: rgb(38 32 54 / 0);
-    --glow-strength: 0.55;
-    --grain-strength: 1;
-    --shadow-rgb: 0 0 0;
-    --highlight: #3d2b6b;
-    --highlight-blend: normal;
-      --logo-filter: brightness(0) invert(1) brightness(0.93);
-    --glass-edge: rgb(255 255 255 / 0.1);
-    --object-edge: rgb(255 255 255 / 0.18);
-    --object-edge-strong: rgb(255 255 255 / 0.26);
-  }
 }
 
 @theme inline {

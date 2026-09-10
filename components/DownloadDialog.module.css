@@ -1,0 +1,323 @@
+/* ============================================================================
+   La carte « Télécharger » de l'en-tête.
+
+   Elle est mise en page comme un feuillet détaché du livre : sa tranche de
+   pages court le long du bord gauche, exactement la rayure qui borde la
+   couverture du bandeau de fin. C'est le seul ornement de la carte, et il dit
+   quelque chose de vrai — ce qu'on ouvre ici est une page qu'on emporte.
+   ========================================================================= */
+
+/* La boîte occupe tout l'écran et reste transparente : le voile est peint par
+   `::backdrop`, et tout clic qui l'atteint est un clic à côté de la carte. */
+.dialog {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 1.25rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* `[open]` plutôt que `.dialog` seul : sans l'attribut, la feuille de style du
+   navigateur garde `display: none`, et c'est ce qui referme la boîte. */
+.dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Le voile ne peut pas lire les jetons de thème dans tous les moteurs : la
+   nuit prune de la marque (#170733) est donc écrite en clair. Elle convient
+   aux deux thèmes — un voile s'assombrit, il ne bascule pas. */
+.dialog::backdrop {
+  background: rgb(23 7 51 / 0.58);
+  backdrop-filter: blur(5px);
+}
+
+/* `margin: auto` sur l'enfant d'un conteneur défilant : c'est ce qui centre la
+   carte sans rogner son haut quand elle dépasse la hauteur de l'écran. */
+.card {
+  position: relative;
+  margin: auto;
+  width: min(24rem, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Le rembourrage gauche dégage la tranche : le bloc de texte reste centré
+     dans la page, pas sur la tranche. */
+  padding: 1.75rem 1.75rem 1.625rem 2.25rem;
+  border-radius: 1.125rem;
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  box-shadow: 0 1.75rem 3.5rem -1.25rem rgb(var(--shadow-rgb) / 0.45);
+  overflow: hidden;
+}
+
+/* La tranche de pages, vue de côté. */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.5rem;
+  border-right: 1px solid var(--line);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--paper) 0,
+    var(--paper) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 3px,
+    color-mix(in srgb, var(--ink) 14%, var(--paper)) 4px
+  );
+}
+
+.close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.close:hover {
+  background: var(--wash);
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.15rem + 1.5vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0.5rem 0 0;
+}
+
+/* ---------- l'ex-libris ---------- */
+
+.plate {
+  position: relative;
+  width: fit-content;
+  margin-top: 1.5rem;
+  padding: 0.8125rem 0.9375rem;
+  background: var(--lilac);
+  border: 1px solid var(--line-2);
+  border-radius: 0.75rem;
+}
+
+/* Le double filet des ex-libris gravés, comme sur la page de liens. */
+.plate::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+/* Les couleurs de marque, pas celles du thème : un lecteur de code attend des
+   modules sombres sur fond clair, et inverser ferait échouer une partie des
+   appareils. Le rembourrage EST la zone de silence — jamais moins de quatre
+   modules, soit 16 px pour un code de 33 modules affiché à 124 px. */
+.qrFrame {
+  display: block;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  background: var(--brand-cream);
+  color: var(--brand-ink);
+}
+
+.qrImage {
+  display: block;
+  width: 7.75rem;
+  height: auto;
+}
+
+.qrNote {
+  font-family: var(--font-hand);
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  color: var(--ink-4);
+  margin: 0.625rem 0 0;
+}
+
+/* ---------- les magasins ---------- */
+
+.storeRow {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 26rem) {
+  .storeRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Un aplat violet et un contour sur le blanc de la carte — le même couple que
+   les deux réponses du bandeau de consentement, à poids égal : les deux
+   magasins restent des pairs, seule la forme les distingue.
+
+   Le contour est la seule frontière de la seconde pastille : il prend l'accent
+   plein plutôt que `--accent-line`, qui ne tient que 2.1:1 sur la carte, là où
+   WCAG 1.4.11 en demande 3. À pleine force il monte à 5.9:1 en thème clair, et
+   le texte d'accent qu'il encadre tient les mêmes 5.9:1 — 4.8:1 sur le lavis
+   de survol. `box-sizing: border-box` vient de Tailwind : les deux pastilles
+   gardent la même hauteur, filet compris. */
+.storeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4375rem;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  background: var(--badge);
+  color: var(--badge-ink);
+  border: 1.5px solid var(--badge-line);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+/* Le filet prend `--accent` et non `--accent-fill` : en thème clair les deux
+   valeurs sont le même violet, le liseré est donc invisible ; en sombre
+   l'aplat (#6d3ff2) ne tient que 2.99:1 contre la carte — sous les 3:1 — et le
+   filet lavande le délimite à 7.5:1. Une seule règle, corrigée là où il faut. */
+.appStore {
+  --badge: var(--accent-fill);
+  --badge-ink: var(--on-accent);
+  --badge-line: var(--accent);
+  --badge-hover: var(--accent-fill-hover);
+}
+
+/* `transparent` plutôt que `--surface` : la pastille prend le blanc de la
+   carte quel qu'il soit, sans avoir à le répéter. */
+.googlePlay {
+  --badge: transparent;
+  --badge-ink: var(--accent);
+  --badge-line: var(--accent);
+  --badge-hover: var(--accent-wash);
+}
+
+.storeButton:hover {
+  background: var(--badge-hover);
+}
+
+.storeButton:active {
+  transform: scale(0.985);
+}
+
+.microcopy {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+  margin: 0.75rem 0 0;
+}
+
+.close:focus-visible,
+.storeButton:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- petits écrans ---------- */
+
+/* Sur un téléphone, le code ne peut pas être scanné par l'appareil qui
+   l'affiche : les deux magasins passent devant, le code reste dessous pour
+   être montré à quelqu'un. Rien n'est focusable dans l'ex-libris, l'ordre de
+   tabulation ne bouge donc pas. */
+@media (max-width: 34rem) {
+  .storeRow {
+    order: 1;
+  }
+
+  .microcopy {
+    order: 2;
+  }
+
+  .plate {
+    order: 3;
+    margin-top: 1.75rem;
+  }
+
+  .qrNote {
+    order: 4;
+  }
+
+  .qrFrame {
+    padding: 0.8125rem;
+  }
+
+  .qrImage {
+    width: 6.25rem;
+  }
+}
+
+/* ---------- arrivée ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open] .card {
+    animation: rise 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .dialog[open]::backdrop {
+    animation: veil 0.28s ease both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes veil {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

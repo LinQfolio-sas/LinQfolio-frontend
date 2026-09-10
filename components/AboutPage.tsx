@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { href } from "@/lib/seo";
 import styles from "./AboutPage.module.css";
 
 function subscribeReducedMotion(callback: () => void) {
@@ -373,10 +374,10 @@ export default function AboutPage() {
             <h2 className={styles.ctaHeadline}>{t.ctaHeadline}</h2>
             <p className={styles.ctaSubhead}>{t.ctaSubhead}</p>
             <div className={styles.ctaActions}>
-              <a href="/" className={styles.btnPrimary}>
+              <a href={href("home", lang)} className={styles.btnPrimary}>
                 {t.ctaDownload}
               </a>
-              <a href="/" className={styles.btnSecondary}>
+              <a href={href("home", lang)} className={styles.btnSecondary}>
                 {t.ctaFeatures}
               </a>
             </div>

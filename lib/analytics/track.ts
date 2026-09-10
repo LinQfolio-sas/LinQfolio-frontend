@@ -39,6 +39,7 @@ export type PageType =
   | "faq"
   | "about"
   | "legal"
+  | "links"
   | "other";
 
 /** Le vocabulaire fermé des paramètres. Une faute de frappe ne compile pas. */
@@ -135,6 +136,7 @@ export const PAGE_TYPE_RULES: ReadonlyArray<readonly [string, PageType]> = [
   ["^/blog/", "blog_post"],
   ["^/faq$", "faq"],
   ["^/a-propos$", "about"],
+  ["^/bio$", "links"],
   ["^/(cgu|confidentialite|mentions-legales|cookies)$", "legal"],
 ];
 

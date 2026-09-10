@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Navbar from "./Navbar";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { href, postHref } from "@/lib/seo";
 import { getRubric } from "@/lib/blog/rubrics";
 import { pick, type Post, type PostGroup, type PostMeta } from "@/lib/blog/types";
 import styles from "./BlogPostPage.module.css";
@@ -143,7 +144,7 @@ export default function BlogPostPage({
           <div className={styles.grain} aria-hidden="true" />
 
           <div className={styles.headText}>
-            <a href="/blog" className={styles.back}>
+            <a href={href("blog", lang)} className={styles.back}>
               <span className={styles.backArrow} aria-hidden="true">
                 &larr;
               </span>
@@ -196,8 +197,8 @@ export default function BlogPostPage({
                 const item = pick(other, lang);
                 if (!item) return null;
                 return (
-                  <li key={other.slug} className={styles.nextItem}>
-                    <a href={`/blog/${other.slug}`} className={styles.nextLink}>
+                  <li key={other.id} className={styles.nextItem}>
+                    <a href={postHref(item.slug, lang)} className={styles.nextLink}>
                       <div className={styles.nextBook}>
                         <Book post={item} lang={lang} />
                       </div>

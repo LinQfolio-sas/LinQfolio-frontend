@@ -9,7 +9,7 @@ import { clickContext, track } from "./track";
  * à `placement` près.
  */
 
-export type StorePlacement = "hero" | "cta_footer";
+export type StorePlacement = "hero" | "header" | "cta_footer" | "links";
 
 export function trackStoreClick(
   store: "app_store" | "google_play",
